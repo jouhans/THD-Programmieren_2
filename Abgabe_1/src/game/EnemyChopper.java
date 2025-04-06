@@ -29,8 +29,8 @@ public class EnemyChopper {
     }
 
     public void addToCanvas() {
-        gameView.addRectangleToCanvas(position.getX(), position.getY(), width, height, 0.0, true, Color.GREEN);
-        gameView.addRectangleToCanvas(position.getX(), position.getY(), width, height, 5.0, false, Color.WHITE);
+        gameView.addRectangleToCanvas(position.getX() - 3, position.getY() - 2, width, height, 0.0, true, Color.GREEN);
+        gameView.addRectangleToCanvas(position.getX() - 3, position.getY() - 2, width, height, 5.0, false, Color.WHITE);
         gameView.addTextToCanvas("Objekt 2", position.getX(), position.getY(),
                 size, true, Color.BLUE, rotation);
     }

@@ -19,7 +19,7 @@ public class Score {
         this.rotation = 0.0;
         this.width = 150;
         this.height = 33;
-        this.position = new Position(GameView.WIDTH - width, 0);
+        this.position = new Position(GameView.WIDTH - width, -8);
     }
 
     public void addToCanvas() {
