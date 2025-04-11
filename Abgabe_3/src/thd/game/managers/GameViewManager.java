@@ -38,7 +38,9 @@ public class GameViewManager {
         startGameLoop();
     }
     private void startGameLoop() {
-        gameManager.gameLoop();
-        gameView.plotCanvas();
+        while (gameView.isVisible()) {
+            gameManager.gameLoop();
+            gameView.plotCanvas();
+        }
     }
 }

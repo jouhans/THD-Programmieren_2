@@ -2,6 +2,8 @@ package thd.game.managers;
 
 import thd.game.utilities.GameView;
 import thd.gameobjects.movable.EnemyChopper;
+import thd.gameobjects.movable.FollowerBall;
+import thd.gameobjects.movable.RandomBall;
 import thd.gameobjects.movable.Truck;
 import thd.gameobjects.unmovable.Life;
 
@@ -10,17 +12,20 @@ class GameManager {
     private final Truck truck;
     private final EnemyChopper enemyChopper;
     private final Life life;
+    private final RandomBall randomBall;
+    private final FollowerBall followerBall;
 
     GameManager(GameView gameView) {
         this.gameView = gameView;
 
-        truck = new Truck(gameView);
-        enemyChopper = new EnemyChopper(gameView);
-        life = new Life(gameView);
+        this.truck = new Truck(gameView);
+        this.enemyChopper = new EnemyChopper(gameView);
+        this.life = new Life(gameView);
+        this.randomBall = new RandomBall(gameView);
+        this.followerBall = new FollowerBall(gameView, randomBall);
 
     }
     void gameLoop() {
-        while (gameView.isVisible()) {
             truck.updatePosition();
             truck.addToCanvas();
 
@@ -29,7 +34,10 @@ class GameManager {
 
             life.addToCanvas();
 
-            gameView.plotCanvas();
-        }
+            randomBall.updatePosition();
+            randomBall.addToCanvas();
+
+            followerBall.updatePosition();
+            followerBall.addToCanvas();
     }
 }
