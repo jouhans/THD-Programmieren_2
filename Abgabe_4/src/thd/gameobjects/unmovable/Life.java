@@ -21,8 +21,7 @@ public class Life extends GameObject {
      */
     public Life(GameView gameView) {
         super(gameView);
-        size = 30.0;
-        rotation = 0.0;
+        size = 2.0;
         width = 150;
         height = 33;
         position.updateCoordinates(new Position(GameView.WIDTH - width, 0));
@@ -30,11 +29,11 @@ public class Life extends GameObject {
 
     @Override
     public void addToCanvas() {
-        gameView.addImageToCanvas("life.png", position.getX(), position.getY(), 2.0, rotation);
+        gameView.addImageToCanvas("life.png", position.getX(), position.getY(), size, rotation);
     }
 
     @Override
     public String toString() {
-        return "Score: " + position;
+        return "Life: " + position;
     }
 }

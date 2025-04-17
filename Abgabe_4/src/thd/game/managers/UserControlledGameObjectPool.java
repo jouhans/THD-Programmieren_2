@@ -3,18 +3,26 @@ package thd.game.managers;
 import thd.game.utilities.GameView;
 import thd.gameobjects.movable.*;
 import thd.gameobjects.unmovable.Life;
+import thd.gameobjects.unmovable.Score;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
-public class UserControlledGameObjectPool {
+class UserControlledGameObjectPool {
 
     protected final GameView gameView;
+
     protected Truck truck;
     protected EnemyChopper enemyChopper;
-    protected Life life;
     protected PlayerChopper playerChopper;
     protected EnemyJet enemyJet;
+
+    protected EnemyJetBomb enemyJetBomb;
+    protected PlayerChopperShot playerChopperShot;
+    protected EnemyChopperShot enemyChopperShot;
+
+    protected Life life;
+    protected Score score;
 
     UserControlledGameObjectPool(GameView gameView) {
         this.gameView = gameView;
@@ -25,7 +33,7 @@ public class UserControlledGameObjectPool {
         for (int keyCode : pressedKeys) {
             processKeyCode(keyCode);
             if (keyCode == KeyEvent.VK_A) {
-                gameView.addTextToCanvas("Taste A gedrückt", 0, 0, 18, true, Color.WHITE, 0);
+                gameView.addTextToCanvas("Taste A gedrückt", 0, 0, 18, true, Color.WHITE, 0, "pressstart2pregular.ttf");
             }
         }
     }

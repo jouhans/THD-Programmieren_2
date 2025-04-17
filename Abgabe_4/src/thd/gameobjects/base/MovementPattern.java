@@ -16,6 +16,10 @@ public class MovementPattern {
         return new Position(0, 0);
     }
 
+    protected Position nextPosition(Position currentPosition) {
+        return new Position(0, 0);
+    }
+
     protected Position startPosition() {
         return new Position(0, 0);
     }

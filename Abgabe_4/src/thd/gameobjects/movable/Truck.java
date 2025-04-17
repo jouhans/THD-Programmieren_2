@@ -23,8 +23,7 @@ public class Truck extends GameObject {
     public Truck(GameView gameView) {
         super(gameView);
         speedInPixel = 3;
-        size = 30.0;
-        rotation = 0.0;
+        size = 2.0;
         width = 150;
         height = 33;
         truckMovementPattern = new TruckMovementPattern();
@@ -47,7 +46,7 @@ public class Truck extends GameObject {
      */
     @Override
     public void addToCanvas() {
-        gameView.addImageToCanvas("truck.png", position.getX(), position.getY(), 2, 0);
+        gameView.addImageToCanvas("truck.png", position.getX(), position.getY(), size, rotation);
     }
 
     @Override

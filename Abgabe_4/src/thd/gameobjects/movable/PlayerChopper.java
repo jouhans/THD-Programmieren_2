@@ -15,7 +15,7 @@ import java.awt.*;
  * @see GameView
  */
 public class PlayerChopper extends GameObject {
-    boolean shotInProgress;
+    private boolean shotInProgress;
 
     /**
      * Initializes a new GameObject "Player Helicopter".
@@ -36,10 +36,11 @@ public class PlayerChopper extends GameObject {
     @Override
     public void addToCanvas() {
         if (shotInProgress) {
-            gameView.addTextToCanvas("X", position.getX(), position.getY(), 30, true, Color.WHITE, rotation);
+            gameView.addTextToCanvas("X", position.getX(), position.getY(), 30, true, Color.WHITE, rotation, "pressstart2pregular.ttf");
         } else {
             gameView.addImageToCanvas("chopper.png", position.getX(), position.getY(), size, rotation);
         }
+        shotInProgress = false;
     }
 
     @Override
@@ -86,7 +87,7 @@ public class PlayerChopper extends GameObject {
 
     @Override
     public String toString() {
-        return "Enemy Chopper: " + position;
+        return "Player Chopper: " + position;
     }
 }
 

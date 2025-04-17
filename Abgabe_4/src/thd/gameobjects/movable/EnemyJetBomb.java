@@ -12,42 +12,40 @@ import thd.gameobjects.base.Position;
  * @see Position
  * @see GameView
  */
-public class EnemyJet extends GameObject {
-    private final EnemyJetMovementPattern enemyJetMovementPattern;
+public class EnemyJetBomb extends GameObject {
+    private final EnemyJetBombMovementPattern enemyJetBombMovementPattern;
 
     /**
      * Initializes a new GameObject "EnemyChopper".
      *
      * @param gameView link GameObject to the current GameView
      */
-    public EnemyJet(GameView gameView) {
+    public EnemyJetBomb(GameView gameView) {
         super(gameView);
         speedInPixel = 4;
         size = 2.0;
         width = 150;
         height = 33;
-        enemyJetMovementPattern = new EnemyJetMovementPattern();
-        position.updateCoordinates(enemyJetMovementPattern.startPosition());
-        targetPosition.updateCoordinates(enemyJetMovementPattern.nextPosition());
+        enemyJetBombMovementPattern = new EnemyJetBombMovementPattern();
+        position.updateCoordinates(enemyJetBombMovementPattern.startPosition());
+        targetPosition.updateCoordinates(enemyJetBombMovementPattern.nextPosition(position));
     }
 
     @Override
     public void updatePosition() {
-        if (targetPosition.similarTo(position)) {
-            targetPosition.updateCoordinates(enemyJetMovementPattern.nextPosition());
+        if (!targetPosition.similarTo(position)) {
+            position.moveToPosition(targetPosition, speedInPixel);
         }
-
-        position.moveToPosition(targetPosition, speedInPixel);
     }
 
     @Override
     public void addToCanvas() {
-        gameView.addImageToCanvas("enemyjet.png", position.getX(), position.getY(), size, rotation);
+        gameView.addImageToCanvas("enemyjetbomb.png", position.getX(), position.getY(), size, rotation);
     }
 
     @Override
     public String toString() {
-        return "Enemy Jet: " + position;
+        return "Enemy Jet Bomb: " + position;
     }
 }
 

@@ -23,8 +23,7 @@ public class EnemyChopper extends GameObject {
     public EnemyChopper(GameView gameView) {
         super(gameView);
         speedInPixel = 4;
-        size = 30.0;
-        rotation = 0.0;
+        size = 1.0;
         width = 150;
         height = 33;
         enemyChopperMovementPattern = new EnemyChopperMovementPattern();
@@ -43,7 +42,7 @@ public class EnemyChopper extends GameObject {
 
     @Override
     public void addToCanvas() {
-        gameView.addImageToCanvas("enemychopper.png", position.getX(), position.getY(), 1, 0.0);
+        gameView.addImageToCanvas("enemychopper.png", position.getX(), position.getY(), size, rotation);
     }
 
     @Override
