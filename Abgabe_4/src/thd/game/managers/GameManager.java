@@ -20,6 +20,7 @@ class GameManager extends UserControlledGameObjectPool{
         enemyJet = new EnemyJet(gameView);
 
         enemyJetBomb = new EnemyJetBomb(gameView);
+        guidedMissile = new GuidedMissile(gameView);
         playerChopperShot = new PlayerChopperShot(gameView);
         enemyChopperShot = new EnemyChopperShot(gameView);
 
@@ -31,6 +32,7 @@ class GameManager extends UserControlledGameObjectPool{
         gameObjectManager.add(playerChopper);
         gameObjectManager.add(enemyJet);
         gameObjectManager.add(enemyJetBomb);
+        gameObjectManager.add(guidedMissile);
         gameObjectManager.add(playerChopperShot);
         gameObjectManager.add(enemyChopperShot);
         gameObjectManager.add(life);

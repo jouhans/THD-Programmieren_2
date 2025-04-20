@@ -19,7 +19,6 @@ class UserControlledGameObjectPool {
 
     protected EnemyJetBomb enemyJetBomb;
     protected GuidedMissile guidedMissile;
-    protected PlayerChopperShot playerChopperShot;
     protected EnemyChopperShot enemyChopperShot;
 
     protected Life life;
