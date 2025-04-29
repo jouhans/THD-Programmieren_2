@@ -2,7 +2,7 @@ package thd.gameobjects.movable;
 
 import thd.game.managers.GamePlayManager;
 import thd.game.utilities.GameView;
-import thd.gameobjects.base.GameObject;
+import thd.gameobjects.base.CollidingGameObject;
 import thd.gameobjects.base.Position;
 
 import java.util.Random;
@@ -15,10 +15,11 @@ import java.util.Random;
  * @see Position
  * @see GameView
  */
-public class EnemyChopper extends GameObject {
-    private final EnemyChopperMovementPattern enemyChopperMovementPattern;
+public class EnemyJet extends CollidingGameObject {
+    private final EnemyJetMovementPattern enemyJetMovementPattern;
     private int shotDurationInMilliseconds;
     private final Random random;
+
 
     /**
      * Initializes a new GameObject "EnemyChopper".
@@ -26,48 +27,54 @@ public class EnemyChopper extends GameObject {
      * @param gameView link GameObject to the current GameView
      * @param gamePlayManager link GameObject to the GamePlayManager
      */
-    public EnemyChopper(GameView gameView, GamePlayManager gamePlayManager) {
+    public EnemyJet(GameView gameView, GamePlayManager gamePlayManager) {
         super(gameView, gamePlayManager);
-        speedInPixel = 3;
-        size = 1.0;
+        speedInPixel = 4;
+        size = 2.0;
         width = 150;
         height = 33;
-        enemyChopperMovementPattern = new EnemyChopperMovementPattern();
-        position.updateCoordinates(enemyChopperMovementPattern.startPosition());
-        targetPosition.updateCoordinates(enemyChopperMovementPattern.nextPosition());
+        enemyJetMovementPattern = new EnemyJetMovementPattern();
+        position.updateCoordinates(enemyJetMovementPattern.startPosition());
+        targetPosition.updateCoordinates(enemyJetMovementPattern.nextPosition());
         shotDurationInMilliseconds = gameView.gameTimeInMilliseconds();
         random = new Random();
     }
 
     @Override
+    public void reactToCollisionWith(CollidingGameObject other) {
+
+    }
+
+    @Override
     public void updatePosition() {
         if (targetPosition.similarTo(position)) {
-            targetPosition.updateCoordinates(enemyChopperMovementPattern.nextPosition());
+            targetPosition.updateCoordinates(enemyJetMovementPattern.nextPosition());
         }
+
         position.moveToPosition(targetPosition, speedInPixel);
     }
 
     @Override
     public void updateStatus() {
-        shootAShot();
-    }
-
-    private void shootAShot() {
-        int randomNumber = random.nextInt(3) + 1;
+        int randomNumber = random.nextInt(3) + 3;
         if (shotDurationInMilliseconds + (randomNumber * 1000) <= gameView.gameTimeInMilliseconds()) {
-            gamePlayManager.spawnGameObject(new EnemyChopperShot(gameView, gamePlayManager, position));
+            gamePlayManager.spawnGameObject(new EnemyJetBomb(gameView, gamePlayManager, position));
             shotDurationInMilliseconds = gameView.gameTimeInMilliseconds();
         }
     }
 
+    private void drop() {
+        gamePlayManager.spawnGameObject(new EnemyJetBomb(gameView, gamePlayManager, position));
+    }
+
     @Override
     public void addToCanvas() {
-        gameView.addImageToCanvas("enemychopper.png", position.getX(), position.getY(), size, rotation);
+        gameView.addImageToCanvas("enemyjet.png", position.getX(), position.getY(), size, rotation);
     }
 
     @Override
     public String toString() {
-        return "Enemy Chopper: " + position;
+        return "Enemy Jet: " + position;
     }
 }
 

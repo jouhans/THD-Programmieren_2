@@ -3,13 +3,13 @@ package thd.gameobjects.movable;
 import thd.gameobjects.base.MovementPattern;
 import thd.gameobjects.base.Position;
 
-class EnemyChopperShotMovementPattern extends MovementPattern {
+class PlayerChopperShotMovementPattern extends MovementPattern {
 
-    EnemyChopperShotMovementPattern() {
+    PlayerChopperShotMovementPattern() {
         super();
     }
 
     Position nextPosition(Position currentPosition, int shotCorrectionXCoordinate, int shotCorrectionYCoordinate) {
-        return new Position(500, currentPosition.getY() + shotCorrectionYCoordinate);
+        return new Position(-1000, currentPosition.getY() + shotCorrectionYCoordinate);
     }
 }

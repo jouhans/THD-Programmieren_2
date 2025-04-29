@@ -2,7 +2,7 @@ package thd.gameobjects.movable;
 
 import thd.game.managers.GamePlayManager;
 import thd.game.utilities.GameView;
-import thd.gameobjects.base.GameObject;
+import thd.gameobjects.base.CollidingGameObject;
 import thd.gameobjects.base.Position;
 
 import java.util.Random;
@@ -15,7 +15,7 @@ import java.util.Random;
  * @see Position
  * @see GameView
  */
-public class EnemyChopper extends GameObject {
+public class EnemyChopper extends CollidingGameObject {
     private final EnemyChopperMovementPattern enemyChopperMovementPattern;
     private int shotDurationInMilliseconds;
     private final Random random;
@@ -37,6 +37,11 @@ public class EnemyChopper extends GameObject {
         targetPosition.updateCoordinates(enemyChopperMovementPattern.nextPosition());
         shotDurationInMilliseconds = gameView.gameTimeInMilliseconds();
         random = new Random();
+    }
+
+    @Override
+    public void reactToCollisionWith(CollidingGameObject other) {
+
     }
 
     @Override

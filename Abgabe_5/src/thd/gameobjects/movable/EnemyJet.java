@@ -5,6 +5,8 @@ import thd.game.utilities.GameView;
 import thd.gameobjects.base.GameObject;
 import thd.gameobjects.base.Position;
 
+import java.util.Random;
+
 /**
  * Creates a new enemy helicopter Object using {@link Position} for the Position and using {@link GameView} to display it.
  * <p>
@@ -15,6 +17,9 @@ import thd.gameobjects.base.Position;
  */
 public class EnemyJet extends GameObject {
     private final EnemyJetMovementPattern enemyJetMovementPattern;
+    private int shotDurationInMilliseconds;
+    private final Random random;
+
 
     /**
      * Initializes a new GameObject "EnemyChopper".
@@ -31,6 +36,8 @@ public class EnemyJet extends GameObject {
         enemyJetMovementPattern = new EnemyJetMovementPattern();
         position.updateCoordinates(enemyJetMovementPattern.startPosition());
         targetPosition.updateCoordinates(enemyJetMovementPattern.nextPosition());
+        shotDurationInMilliseconds = gameView.gameTimeInMilliseconds();
+        random = new Random();
     }
 
     @Override
@@ -40,6 +47,19 @@ public class EnemyJet extends GameObject {
         }
 
         position.moveToPosition(targetPosition, speedInPixel);
+    }
+
+    @Override
+    public void updateStatus() {
+        int randomNumber = random.nextInt(3) + 3;
+        if (shotDurationInMilliseconds + (randomNumber * 1000) <= gameView.gameTimeInMilliseconds()) {
+            gamePlayManager.spawnGameObject(new EnemyJetBomb(gameView, gamePlayManager, position));
+            shotDurationInMilliseconds = gameView.gameTimeInMilliseconds();
+        }
+    }
+
+    private void drop() {
+        gamePlayManager.spawnGameObject(new EnemyJetBomb(gameView, gamePlayManager, position));
     }
 
     @Override
