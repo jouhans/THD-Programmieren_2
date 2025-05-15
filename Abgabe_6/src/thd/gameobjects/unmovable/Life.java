@@ -31,7 +31,10 @@ public class Life extends GameObject {
 
     @Override
     public void addToCanvas() {
-        gameView.addImageToCanvas("life.png", position.getX(), position.getY(), size, rotation);
+        for (int i = 0; i < gamePlayManager.getLives(); i++) {
+            gameView.addImageToCanvas("life.png", position.getX() + (i*40), position.getY(), size, rotation);
+        }
+
     }
 
     @Override

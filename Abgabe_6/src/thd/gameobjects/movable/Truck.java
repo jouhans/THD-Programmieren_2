@@ -14,7 +14,6 @@ import thd.gameobjects.base.Position;
  * @see GameView
  */
 public class Truck extends CollidingGameObject {
-
     private final TruckMovementPattern truckMovementPattern;
     /**
      * Initializes a new GameObject "Truck".
@@ -26,16 +25,19 @@ public class Truck extends CollidingGameObject {
         super(gameView, gamePlayManager);
         speedInPixel = 3;
         size = 2.0;
-        width = 150;
-        height = 33;
+        width = 62;
+        height = 43;
         truckMovementPattern = new TruckMovementPattern();
         position.updateCoordinates(truckMovementPattern.startPosition());
         targetPosition.updateCoordinates(truckMovementPattern.nextPosition());
+        hitBoxOffsets(0, 0, 0, 0);
     }
 
     @Override
     public void reactToCollisionWith(CollidingGameObject other) {
-
+        if (other instanceof EnemyJetBomb) {
+            gamePlayManager.destroyGameObject(this);
+        }
     }
 
     /**

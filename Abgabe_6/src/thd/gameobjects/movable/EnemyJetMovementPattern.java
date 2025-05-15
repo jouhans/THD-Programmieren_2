@@ -7,9 +7,9 @@ class EnemyJetMovementPattern extends MovementPattern {
 
     private final Position[] endPoints;
     private int currentIndex;
-    private double randomY;
-    private double randomXStart;
-    private double randomXEnd;
+    private final double randomY;
+    private final double randomXStart;
+    private final double randomXEnd;
 
     EnemyJetMovementPattern() {
         super();

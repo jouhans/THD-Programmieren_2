@@ -26,11 +26,12 @@ public class GuidedMissile extends CollidingGameObject {
         super(gameView, gamePlayManager);
         speedInPixel = 4;
         size = 0.6;
-        width = 150;
-        height = 33;
+        width = 48;
+        height = 25;
         guidedMissileMovementPattern = new GuidedMissileMovementPattern();
         position.updateCoordinates(guidedMissileMovementPattern.startPosition());
         targetPosition.updateCoordinates(guidedMissileMovementPattern.nextPosition(position));
+        hitBoxOffsets(0, 0, 0, 0);
     }
 
     @Override

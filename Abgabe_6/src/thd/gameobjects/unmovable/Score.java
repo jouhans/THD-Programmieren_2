@@ -17,7 +17,7 @@ import java.awt.*;
  */
 public class Score extends GameObject {
 
-    private final int score;
+    private int score;
 
     /**
      * Initializes a new GameObject "Score".
@@ -32,12 +32,17 @@ public class Score extends GameObject {
         width = 150;
         height = 33;
         position.updateCoordinates(new Position(640 - width/2, 0));
-        score = 0;
+        score = gamePlayManager.getPoints();
+    }
+
+    @Override
+    public void updateStatus() {
+        score = gamePlayManager.getPoints();
     }
 
     @Override
     public void addToCanvas() {
-        gameView.addTextToCanvas("" + score, position.getX(), position.getY(), size, true, Color.WHITE, rotation, "pressstart2pregular.ttf");
+        gameView.addTextToCanvas(String.format("%06d", score), position.getX(), position.getY(), size, true, Color.WHITE, rotation, "pressstart2pregular.ttf");
     }
 
     @Override

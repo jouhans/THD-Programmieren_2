@@ -4,6 +4,7 @@ import thd.game.managers.GamePlayManager;
 import thd.game.utilities.GameView;
 import thd.gameobjects.base.CollidingGameObject;
 import thd.gameobjects.base.Position;
+import thd.gameobjects.unmovable.Ground;
 
 /**
  * Creates a new enemy helicopter Object using {@link Position} for the Position and using {@link GameView} to display it.
@@ -29,13 +30,14 @@ class EnemyJetBomb extends CollidingGameObject {
         super(gameView, gamePlayManager);
         speedInPixel = 4;
         size = 2.0;
-        width = 150;
-        height = 33;
+        width = 16;
+        height = 35;
         shotCorrectionXCoordinate = 20;
         shotCorrectionYCoordinate = 20;
         enemyJetBombMovementPattern = new EnemyJetBombMovementPattern();
         this.position.updateCoordinates(position.getX() + shotCorrectionXCoordinate, position.getY() + shotCorrectionYCoordinate);
         targetPosition.updateCoordinates(enemyJetBombMovementPattern.nextPosition(position));
+        hitBoxOffsets(0, 0, 0, 0);
     }
 
     @Override
@@ -57,7 +59,9 @@ class EnemyJetBomb extends CollidingGameObject {
 
     @Override
     public void reactToCollisionWith(CollidingGameObject other) {
-
+        if (other instanceof PlayerChopperShot || other instanceof EnemyChopperShot || other instanceof EnemyChopper || other instanceof PlayerChopper || other instanceof EnemyJetBomb || other instanceof Ground) {
+            gamePlayManager.destroyGameObject(this);
+        }
     }
 }
 

@@ -2,6 +2,8 @@ package thd.gameobjects.base;
 
 import thd.game.utilities.GameView;
 
+import java.util.Objects;
+
 /**
  * Represents a two-dimensional position using x and y coordinates and is used to display it on the {@link GameView}
  * <p>
@@ -186,6 +188,26 @@ public class Position {
      */
     public void down(double pixel) {
         y += pixel;
+    }
+
+    @Override
+    public boolean equals(Object o){
+
+        if (o == this) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Position other = (Position) o;
+        return Double.compare(x, other.x) == 0
+                && Double.compare(y, other.y) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y);
     }
 
     @Override

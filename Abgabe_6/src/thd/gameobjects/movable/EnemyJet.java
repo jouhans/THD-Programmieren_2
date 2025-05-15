@@ -4,6 +4,7 @@ import thd.game.managers.GamePlayManager;
 import thd.game.utilities.GameView;
 import thd.gameobjects.base.CollidingGameObject;
 import thd.gameobjects.base.Position;
+import thd.gameobjects.unmovable.Ground;
 
 import java.util.Random;
 
@@ -26,23 +27,28 @@ public class EnemyJet extends CollidingGameObject {
      *
      * @param gameView link GameObject to the current GameView
      * @param gamePlayManager link GameObject to the GamePlayManager
+     * @param ground link ground to the EnemyJet
      */
-    public EnemyJet(GameView gameView, GamePlayManager gamePlayManager) {
+    public EnemyJet(GameView gameView, GamePlayManager gamePlayManager, Ground ground) {
         super(gameView, gamePlayManager);
         speedInPixel = 4;
         size = 2.0;
-        width = 150;
-        height = 33;
+        width = 80;
+        height = 30;
         enemyJetMovementPattern = new EnemyJetMovementPattern();
         position.updateCoordinates(enemyJetMovementPattern.startPosition());
         targetPosition.updateCoordinates(enemyJetMovementPattern.nextPosition());
         shotDurationInMilliseconds = gameView.gameTimeInMilliseconds();
         random = new Random();
+        hitBoxOffsets(0, 0, 0, 0);
     }
 
     @Override
     public void reactToCollisionWith(CollidingGameObject other) {
-
+        if (other instanceof PlayerChopperShot || other instanceof PlayerChopper || other instanceof EnemyJet) {
+            gamePlayManager.destroyGameObject(this);
+            gamePlayManager.addPoints(GamePlayManager.ENEMY_JET_POINTS);
+        }
     }
 
     @Override

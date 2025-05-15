@@ -16,13 +16,26 @@ import thd.gameobjects.base.GameObject;
  */
 public class GamePlayManager extends UserControlledGameObjectPool{
 
+    private static final int LIVES = 3;
+    /**
+     * Points for killing the enemy Chopper.
+     */
+    public static final int ENEMY_CHOPPER_POINTS = 100;
+    /**
+     * Points for killing the enemy Jet.
+     */
+    public static final int ENEMY_JET_POINTS = 200;
+
     private final GameObjectManager gameObjectManager;
-    private int currentNumberOfVisibleSquares;
+    protected int points;
+    protected int lives;
+
 
     protected GamePlayManager(GameView gameView) {
         super(gameView);
         gameObjectManager = new GameObjectManager();
-        currentNumberOfVisibleSquares = 0;
+        points = 0;
+        lives = LIVES;
     }
 
     /**
@@ -43,11 +56,49 @@ public class GamePlayManager extends UserControlledGameObjectPool{
         gameObjectManager.remove(gameObject);
     }
 
+    /**
+     * Get the current number of Lives.
+     *
+     * @return lives
+     */
+    public int getLives() {
+        return lives;
+    }
+
+    /**
+     * Reduce the lives by 1.
+     */
+    public void lifeLost() {
+        if (lives > 0) {
+            lives -= 1;
+        }
+    }
+
+    /**
+     * Add Points to the Score.
+     *
+     * @param numberOfPoints Points added to the Score
+     */
+    public void addPoints(int numberOfPoints) {
+        points += numberOfPoints;
+    }
+
+    /**
+     * Get the current Score Points.
+     *
+     * @return points
+     */
+    public int getPoints() {
+        return points;
+    }
+
     protected void destroyAllGameObjects(){
         gameObjectManager.removeAll();
     }
-
     private void gamePlayManagement(){
+        if (lives == 0) {
+            destroyGameObject(playerChopper);
+        }
     }
 
     @Override

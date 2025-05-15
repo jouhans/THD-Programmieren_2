@@ -5,6 +5,10 @@ import thd.game.utilities.GameView;
 import thd.gameobjects.base.CollidingGameObject;
 import thd.gameobjects.base.MainCharacter;
 import thd.gameobjects.base.Position;
+import thd.gameobjects.unmovable.Ground;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Creates a new Player helicopter Object using {@link Position} for the Position and using {@link GameView} to display it.
@@ -15,7 +19,7 @@ import thd.gameobjects.base.Position;
  * @see GameView
  */
 public class PlayerChopper extends CollidingGameObject implements MainCharacter {
-
+    private final List<CollidingGameObject> collidingGameObjectsForPathDecision;
     private int shotDurationInMilliseconds;
 
     /**
@@ -23,21 +27,27 @@ public class PlayerChopper extends CollidingGameObject implements MainCharacter 
      *
      * @param gameView link GameObject to the current GameView
      * @param gamePlayManager link GameObject to the GamePlayManager
+     * @param ground link ground to the PlayerChopper
      */
-    public PlayerChopper(GameView gameView, GamePlayManager gamePlayManager) {
+    public PlayerChopper(GameView gameView, GamePlayManager gamePlayManager, Ground ground) {
         super(gameView, gamePlayManager);
         speedInPixel = 8;
         size = 2;
         rotation = 0.0;
-        width = 150;
-        height = 33;
+        width = 122;
+        height = 60;
         position.updateCoordinates(new Position(640, 360));
         shotDurationInMilliseconds = gameView.gameTimeInMilliseconds();
+        hitBoxOffsets(0, 0, 0, 0);
+        collidingGameObjectsForPathDecision = new ArrayList<>();
+        collidingGameObjectsForPathDecision.add(ground);
     }
 
     @Override
     public void reactToCollisionWith(CollidingGameObject other) {
-
+        if (other instanceof EnemyChopperShot || other instanceof EnemyJetBomb || other instanceof EnemyChopper || other instanceof EnemyJet) {
+            gamePlayManager.lifeLost();
+        }
     }
 
     @Override
@@ -74,7 +84,13 @@ public class PlayerChopper extends CollidingGameObject implements MainCharacter 
      * Moves PlayerChopper down.
      */
     public void down() {
-        position.moveToPosition(new Position(position.getX(), position.getY() + speedInPixel), speedInPixel);
+        for (CollidingGameObject collidingGameObject : collidingGameObjectsForPathDecision) {
+            if (!collidesWith(collidingGameObject)) {
+                position.moveToPosition(new Position(position.getX(), position.getY() + speedInPixel), speedInPixel);
+                break;
+            }
+        }
+
     }
 
     @Override

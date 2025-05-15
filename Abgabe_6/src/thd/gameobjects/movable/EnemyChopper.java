@@ -30,18 +30,22 @@ public class EnemyChopper extends CollidingGameObject {
         super(gameView, gamePlayManager);
         speedInPixel = 3;
         size = 1.0;
-        width = 150;
-        height = 33;
+        width = 85;
+        height = 50;
         enemyChopperMovementPattern = new EnemyChopperMovementPattern();
         position.updateCoordinates(enemyChopperMovementPattern.startPosition());
         targetPosition.updateCoordinates(enemyChopperMovementPattern.nextPosition());
         shotDurationInMilliseconds = gameView.gameTimeInMilliseconds();
         random = new Random();
+        hitBoxOffsets(0, 0, 0, 0);
     }
 
     @Override
     public void reactToCollisionWith(CollidingGameObject other) {
-
+        if (other instanceof PlayerChopperShot || other instanceof PlayerChopper || other instanceof EnemyJet || other instanceof EnemyJetBomb) {
+            gamePlayManager.destroyGameObject(this);
+            gamePlayManager.addPoints(GamePlayManager.ENEMY_CHOPPER_POINTS);
+        }
     }
 
     @Override

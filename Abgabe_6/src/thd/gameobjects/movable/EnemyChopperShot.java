@@ -29,13 +29,14 @@ class EnemyChopperShot extends CollidingGameObject {
         super(gameView, gamePlayManager);
         speedInPixel = 6;
         size = 0.4;
-        width = 200;
-        height = 33;
+        width = 28;
+        height = 25;
         shotCorrectionXCoordinate = 12;
         shotCorrectionYCoordinate = 12;
         enemyChopperShotMovementPattern = new EnemyChopperShotMovementPattern();
         this.position.updateCoordinates(position.getX() - shotCorrectionXCoordinate, position.getY() + shotCorrectionYCoordinate);
         targetPosition.updateCoordinates(enemyChopperShotMovementPattern.nextPosition(position, shotCorrectionXCoordinate, shotCorrectionYCoordinate));
+        hitBoxOffsets(0, 0, 0, 0);
     }
 
     @Override
@@ -57,7 +58,9 @@ class EnemyChopperShot extends CollidingGameObject {
 
     @Override
     public void reactToCollisionWith(CollidingGameObject other) {
-
+        if (other instanceof PlayerChopper || other instanceof PlayerChopperShot || other instanceof EnemyJetBomb) {
+            gamePlayManager.destroyGameObject(this);
+        }
     }
 }
 

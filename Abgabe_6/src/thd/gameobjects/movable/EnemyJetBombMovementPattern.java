@@ -14,7 +14,7 @@ class EnemyJetBombMovementPattern extends MovementPattern {
 
     @Override
     protected Position nextPosition(Position currentPosition) {
-        return new Position(currentPosition.getX(), 500);
+        return new Position(currentPosition.getX(), 600);
     }
 
     @Override
