@@ -2,8 +2,9 @@ package thd.game.managers;
 
 import thd.game.utilities.GameView;
 import thd.gameobjects.base.GameObject;
+import thd.gameobjects.base.Position;
 import thd.gameobjects.base.ShiftableGameObject;
-
+import thd.gameobjects.unmovable.BackgroundAir;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -80,6 +81,21 @@ public class WorldShiftManager extends UserControlledGameObjectPool {
         for (GameObject gameObject : shiftableGameObjects) {
             gameObject.getPosition().right(shiftX);
             gameObject.getPosition().down(shiftY);
+        }
+    }
+
+    protected void tpBackgroundAirWhileMoving() {
+        for (GameObject gameObject : shiftableGameObjects) {
+            if (gameObject instanceof BackgroundAir) {
+                Position referencePositionNegative = new Position(-600 * 3, 0);
+                Position referencePositionPositive = new Position(600 * 3, 0);
+                Position gameObjectPosition = gameObject.getPosition();
+                if (referencePositionNegative.getX() > gameObjectPosition.getX()) {
+                    gameObject.updateCoordinates(new Position(3 * 600, gameObjectPosition.getY()));
+                } else if (referencePositionPositive.getX() < gameObjectPosition.getX()) {
+                    gameObject.updateCoordinates(new Position(-3 * 600, gameObjectPosition.getY()));
+                }
+            }
         }
     }
 }

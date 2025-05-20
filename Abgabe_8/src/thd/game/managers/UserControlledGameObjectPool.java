@@ -3,7 +3,8 @@ package thd.game.managers;
 import thd.game.level.Level;
 import thd.game.utilities.GameView;
 import thd.gameobjects.movable.*;
-import thd.gameobjects.unmovable.Ground;
+import thd.gameobjects.unmovable.BackgroundAir;
+import thd.gameobjects.unmovable.BackgroundGround;
 import thd.gameobjects.unmovable.Life;
 import thd.gameobjects.unmovable.Score;
 
@@ -22,7 +23,16 @@ class UserControlledGameObjectPool {
 
     protected Life life;
     protected Score score;
-    protected Ground ground;
+    protected BackgroundGround backgroundGround;
+
+    protected BackgroundAir backgroundAir1;
+    protected BackgroundAir backgroundAir2;
+    protected BackgroundAir backgroundAir3;
+    protected BackgroundAir backgroundAir4;
+    protected BackgroundAir backgroundAir5;
+    protected BackgroundAir backgroundAir6;
+    protected BackgroundAir backgroundAir7;
+
 
     UserControlledGameObjectPool(GameView gameView) {
         this.gameView = gameView;

@@ -33,7 +33,7 @@ public class GameViewManager {
         gameView.updateWindowTitle("Chopper Command");
         gameView.updateStatusText("Johannes Riedel - Java Programmierung SS 2025");
         gameView.updateWindowIcon("icon.png");
-        gameView.updateBackgroundColor(Color.gray);
+        gameView.updateBackgroundColor(Color.yellow);
         gameManager = new GameManager(gameView);
         startGameLoop();
     }

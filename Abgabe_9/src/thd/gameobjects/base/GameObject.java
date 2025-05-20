@@ -36,7 +36,7 @@ public abstract class GameObject {
     }
 
     /**
-     * Return the current distance to the Background.
+     * Return the current distance to the BackgroundGround.
      *
      * @return distanceToBackground
      */
@@ -81,6 +81,13 @@ public abstract class GameObject {
     public double getHeight() {
         return height;
     }
+
+    /**
+     * Update the Coordinates of the Game object.
+     *
+     * @param position position to set the Game object
+     */
+    public void updateCoordinates(Position position) {}
 
     /**
      * Update the status of game object.

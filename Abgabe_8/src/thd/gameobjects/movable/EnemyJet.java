@@ -6,7 +6,7 @@ import thd.gameobjects.base.ActivatableGameObject;
 import thd.gameobjects.base.CollidingGameObject;
 import thd.gameobjects.base.Position;
 import thd.gameobjects.base.ShiftableGameObject;
-import thd.gameobjects.unmovable.Ground;
+import thd.gameobjects.unmovable.BackgroundGround;
 
 import java.util.Random;
 
@@ -28,9 +28,9 @@ public class EnemyJet extends CollidingGameObject implements ShiftableGameObject
      *
      * @param gameView link GameObject to the current GameView
      * @param gamePlayManager link GameObject to the GamePlayManager
-     * @param ground link ground to the EnemyJet
+     * @param backgroundGround link backgroundGround to the EnemyJet
      */
-    public EnemyJet(GameView gameView, GamePlayManager gamePlayManager, Ground ground) {
+    public EnemyJet(GameView gameView, GamePlayManager gamePlayManager, BackgroundGround backgroundGround) {
         super(gameView, gamePlayManager);
         random = new Random();
         speedInPixel = 4;

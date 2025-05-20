@@ -5,7 +5,7 @@ import thd.game.utilities.GameView;
 import thd.gameobjects.base.CollidingGameObject;
 import thd.gameobjects.base.MainCharacter;
 import thd.gameobjects.base.Position;
-import thd.gameobjects.unmovable.Ground;
+import thd.gameobjects.unmovable.BackgroundGround;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,9 +27,9 @@ public class PlayerChopper extends CollidingGameObject implements MainCharacter 
      *
      * @param gameView link GameObject to the current GameView
      * @param gamePlayManager link GameObject to the GamePlayManager
-     * @param ground link ground to the PlayerChopper
+     * @param backgroundGround link backgroundGround to the PlayerChopper
      */
-    public PlayerChopper(GameView gameView, GamePlayManager gamePlayManager, Ground ground) {
+    public PlayerChopper(GameView gameView, GamePlayManager gamePlayManager, BackgroundGround backgroundGround) {
         super(gameView, gamePlayManager);
         speedInPixel = 8;
         size = 2;
@@ -41,7 +41,7 @@ public class PlayerChopper extends CollidingGameObject implements MainCharacter 
         shotDurationInMilliseconds = gameView.gameTimeInMilliseconds();
         hitBoxOffsets(0, 0, 0, 0);
         collidingGameObjectsForPathDecision = new ArrayList<>();
-        collidingGameObjectsForPathDecision.add(ground);
+        collidingGameObjectsForPathDecision.add(backgroundGround);
     }
 
     @Override

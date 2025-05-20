@@ -5,7 +5,7 @@ import thd.game.utilities.GameView;
 import thd.gameobjects.base.CollidingGameObject;
 import thd.gameobjects.base.Position;
 import thd.gameobjects.base.ShiftableGameObject;
-import thd.gameobjects.unmovable.Ground;
+import thd.gameobjects.unmovable.BackgroundGround;
 
 /**
  * Creates a new enemy helicopter Object using {@link Position} for the Position and using {@link GameView} to display it.
@@ -56,7 +56,7 @@ class EnemyJetBomb extends CollidingGameObject implements ShiftableGameObject {
 
     @Override
     public void reactToCollisionWith(CollidingGameObject other) {
-        if (other instanceof PlayerChopperShot || other instanceof PlayerChopper || other instanceof Ground) {
+        if (other instanceof PlayerChopperShot || other instanceof PlayerChopper || other instanceof BackgroundGround) {
             gamePlayManager.destroyGameObject(this);
         }
     }
