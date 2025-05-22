@@ -90,7 +90,7 @@ public class EnemyChopper extends CollidingGameObject implements ShiftableGameOb
     }
 
     private void shoot() {
-        int randomNumber = random.nextInt(3) + 1;
+        int randomNumber = random.nextInt(3) + 2;
         if (shotDurationInMilliseconds + (randomNumber * 1000) <= gameView.gameTimeInMilliseconds()) {
             gamePlayManager.spawnGameObject(new EnemyChopperShot(gameView, gamePlayManager, position));
             shotDurationInMilliseconds = gameView.gameTimeInMilliseconds();

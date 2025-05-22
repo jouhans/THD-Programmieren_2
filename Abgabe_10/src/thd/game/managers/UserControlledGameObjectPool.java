@@ -2,13 +2,9 @@ package thd.game.managers;
 
 import thd.game.level.Level;
 import thd.game.utilities.GameView;
-import thd.gameobjects.movable.GuidedMissile;
 import thd.gameobjects.movable.PlayerChopper;
 import thd.gameobjects.movable.Truck;
-import thd.gameobjects.unmovable.BackgroundAir;
-import thd.gameobjects.unmovable.BackgroundGround;
-import thd.gameobjects.unmovable.Life;
-import thd.gameobjects.unmovable.Score;
+import thd.gameobjects.unmovable.*;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -21,8 +17,6 @@ class UserControlledGameObjectPool {
     protected Truck truck;
     protected PlayerChopper playerChopper;
 
-    protected GuidedMissile guidedMissile;
-
     protected Life life;
     protected Score score;
     protected BackgroundGround backgroundGround;
@@ -34,6 +28,8 @@ class UserControlledGameObjectPool {
     protected BackgroundAir backgroundAir5;
     protected BackgroundAir backgroundAir6;
     protected BackgroundAir backgroundAir7;
+
+    protected Overlay overlay;
 
 
     UserControlledGameObjectPool(GameView gameView) {

@@ -1,9 +1,12 @@
 package thd.game.managers;
 
+import thd.game.level.Difficulty;
+import thd.game.level.Level;
 import thd.game.utilities.GameView;
 import thd.gameobjects.base.GameObject;
 import thd.gameobjects.movable.EnemyChopper;
 import thd.gameobjects.movable.EnemyJet;
+import thd.gameobjects.movable.Truck;
 
 import java.util.List;
 
@@ -13,21 +16,35 @@ class GameManager extends LevelManager {
 
     GameManager(GameView gameView) {
         super(gameView);
-        initializeGame();
+        startNewGame();
         gameObjects = gameObjectManager.getGameObjects();
     }
 
     private void gameManagement() {
         if (endOfGame()) {
-            initializeGame();
+            if (!overlay.isMessageShown()) {
+                overlay.showMessage("Game Over");
+                if (gameView.timer(2000, 0, this)) {
+                    overlay.stopShowing();
+                    startNewGame();
+                }
+            }
         } else if (endOfLevel()) {
-            switchToNextLevel();
-            initializeLevel();
+            if (!overlay.isMessageShown()) {
+                overlay.showMessage("Great Job");
+                if (gameView.timer(2000, 0, this)) {
+                    overlay.stopShowing();
+                    updatePointsAfterLevel();
+                    switchToNextLevel();
+                    initializeLevel();
+                }
+            }
         }
     }
 
     @Override
     protected void initializeLevel() {
+        overlay.showMessage(level.name, 2);
         super.initializeLevel();
     }
 
@@ -35,6 +52,14 @@ class GameManager extends LevelManager {
     protected void initializeGame() {
         super.initializeGame();
         initializeLevel();
+    }
+
+    private void updatePointsAfterLevel() {
+        for (GameObject gameObject : gameObjects) {
+            if (gameObject instanceof Truck) {
+                points += TRUCK_POINTS * level.number;
+            }
+        }
     }
 
     private boolean endOfLevel() {
@@ -52,7 +77,17 @@ class GameManager extends LevelManager {
     }
 
     private boolean endOfGame() {
+        for (GameObject gameObject: gameObjects) {
+            if (gameObject instanceof Truck) {
+                return false;
+            }
+        }
         return lives == 0 || (!hasNextLevel() && endOfLevel());
+    }
+
+    private void startNewGame() {
+        Level.difficulty = Difficulty.EASY;
+        initializeGame();
     }
 
     @Override

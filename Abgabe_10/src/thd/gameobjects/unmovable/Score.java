@@ -29,8 +29,8 @@ public class Score extends GameObject {
         super(gameView, gamePlayManager);
         size = 30.0;
         rotation = 0.0;
-        width = 150;
-        height = 33;
+        width = 50;
+        height = 10;
         distanceToBackground = 3;
         position.updateCoordinates(new Position(640 - width/2, 0));
         score = gamePlayManager.getPoints();

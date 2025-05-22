@@ -26,12 +26,12 @@ class PlayerChopperShot extends CollidingGameObject implements ShiftableGameObje
             case MOVING_RIGHT -> this.position.updateCoordinates(position.getX() + shotCorrectionXCoordinate, position.getY() + shotCorrectionYCoordinate);
         }
         hitBoxOffsets(0, 0, 0, 0);
-        time = gameView.gameTimeInMilliseconds();
+        timeAtStart = gameView.gameTimeInMilliseconds();
     }
 
     @Override
     public void updatePosition() {
-        if (gameView.gameTimeInMilliseconds() < time + 4000) {
+        if (gameView.gameTimeInMilliseconds() < timeAtStart + 4000) {
             if (currentState == PlayerChopper.State.MOVING_LEFT) {
                 position.left(speedInPixel);
             } else if (currentState == PlayerChopper.State.MOVING_RIGHT) {

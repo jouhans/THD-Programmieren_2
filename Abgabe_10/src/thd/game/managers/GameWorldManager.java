@@ -4,22 +4,25 @@ import thd.game.utilities.GameView;
 import thd.gameobjects.base.GameObject;
 import thd.gameobjects.base.Position;
 import thd.gameobjects.movable.*;
-import thd.gameobjects.unmovable.BackgroundAir;
-import thd.gameobjects.unmovable.BackgroundGround;
-import thd.gameobjects.unmovable.Life;
-import thd.gameobjects.unmovable.Score;
+import thd.gameobjects.unmovable.*;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Random;
 
 class GameWorldManager extends GamePlayManager{
 
     protected final List<GameObject> activatableGameObjects;
     private final Position referencePositionBackground;
+    private final Random random;
+    private int objectsPerZone;
 
     protected GameWorldManager(GameView gameView) {
         super(gameView);
+
+        objectsPerZone = 4;
+        random = new Random();
 
         referencePositionBackground = new Position(0, 0);
 
@@ -36,11 +39,11 @@ class GameWorldManager extends GamePlayManager{
         backgroundAir6 = new BackgroundAir(gameView, this, new Position(referencePositionBackground.getX() + (2 * 600), referencePositionBackground.getY()));
         backgroundAir7 = new BackgroundAir(gameView, this, new Position(referencePositionBackground.getX() + (3 * 600), referencePositionBackground.getY()));
 
+        overlay = new Overlay(gameView, this);
 
         truck = new Truck(gameView, this);
         playerChopper = new PlayerChopper(gameView, this, backgroundGround);
 
-        guidedMissile = new GuidedMissile(gameView, this);
         life = new Life(gameView, this);
 
     }
@@ -54,9 +57,8 @@ class GameWorldManager extends GamePlayManager{
     }
 
     private void spawnGameObjects() {
-        spawnGameObject(truck);
+        spawnAllTrucks();
         spawnGameObject(playerChopper);
-        spawnGameObject(guidedMissile);
         spawnGameObject(life);
         spawnGameObject(score);
         spawnGameObject(backgroundGround);
@@ -67,7 +69,7 @@ class GameWorldManager extends GamePlayManager{
         spawnGameObject(backgroundAir5);
         spawnGameObject(backgroundAir6);
         spawnGameObject(backgroundAir7);
-
+        spawnGameObject(overlay);
     }
 
     private void addActivatableGameObject(GameObject gameObject) {
@@ -83,6 +85,26 @@ class GameWorldManager extends GamePlayManager{
         super.gameLoop();
         activateGameObjects();
         tpBackgroundAirWhileMoving();
+        manageGuidedMissile();
+    }
+
+    private void spawnAllTrucks() {
+        for (int zone = -1; zone <= 1; zone++) {
+            int startX = zone * GameView.WIDTH;
+            int step = GameView.WIDTH / (objectsPerZone + 1);
+
+            for (int i = 1; i <= objectsPerZone; i++) {
+                int x = startX + i * step;
+                spawnGameObject(new Truck(gameView, this, x));
+            }
+        }
+    }
+
+    private void manageGuidedMissile() {
+        int randomX = random.nextInt(0, 128) * 10;
+        if (gameView.timer(3000, 0, this)) {
+            spawnGameObject(new GuidedMissile(gameView, this, playerChopper, randomX));
+        }
     }
 
     private void activateGameObjects() {
@@ -120,7 +142,7 @@ class GameWorldManager extends GamePlayManager{
                     spawnGameObject(enemyChopper);
                     enemyChopper.getPosition().updateCoordinates(x, y);
                 } else if (character == 'J') {
-                    EnemyJet enemyJet = new EnemyJet(gameView, this, backgroundGround);
+                    EnemyJet enemyJet = new EnemyJet(gameView, this);
                     addActivatableGameObject(enemyJet);
                     spawnGameObject(enemyJet);
                     enemyJet.getPosition().updateCoordinates(x, y);

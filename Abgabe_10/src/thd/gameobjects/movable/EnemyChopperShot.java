@@ -6,6 +6,8 @@ import thd.gameobjects.base.CollidingGameObject;
 import thd.gameobjects.base.Position;
 import thd.gameobjects.base.ShiftableGameObject;
 
+import java.util.Random;
+
 /**
  * Creates a new EnemyChopper Shot Object using {@link Position} for the Position and using {@link GameView} to display it.
  * <p>
@@ -17,6 +19,8 @@ import thd.gameobjects.base.ShiftableGameObject;
 class EnemyChopperShot extends CollidingGameObject implements ShiftableGameObject {
     private final int shotCorrectionYCoordinate;
     private final int shotCorrectionXCoordinate;
+    private final Random random;
+    private final int timeTillExplode;
 
     /**
      * Initializes a new GameObject "EnemyChopperShot".
@@ -36,11 +40,13 @@ class EnemyChopperShot extends CollidingGameObject implements ShiftableGameObjec
         shotCorrectionYCoordinate = 12;
         this.position.updateCoordinates(position.getX() - shotCorrectionXCoordinate, position.getY() + shotCorrectionYCoordinate);
         hitBoxOffsets(0, 0, 0, 0);
-        time = gameView.gameTimeInMilliseconds();
+        timeAtStart = gameView.gameTimeInMilliseconds();
+        random = new Random();
+        timeTillExplode = (random.nextInt(1, 400)) * 10;
     }
     @Override
     public void updatePosition() {
-        if (gameView.gameTimeInMilliseconds() < time + 4000) {
+        if (gameView.gameTimeInMilliseconds() < timeAtStart + timeTillExplode) {
             position.right(speedInPixel);
         } else {
             gamePlayManager.destroyGameObject(this);

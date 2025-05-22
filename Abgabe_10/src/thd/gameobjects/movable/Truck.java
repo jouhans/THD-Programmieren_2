@@ -15,6 +15,7 @@ import thd.gameobjects.base.ShiftableGameObject;
  * @see GameView
  */
 public class Truck extends CollidingGameObject implements ShiftableGameObject {
+
     /**
      * Initializes a new GameObject "Truck".
      *
@@ -29,6 +30,24 @@ public class Truck extends CollidingGameObject implements ShiftableGameObject {
         height = 43;
         distanceToBackground = 4;
         position.updateCoordinates(new Position(1720, 500));
+        hitBoxOffsets(0, 0, 0, 0);
+    }
+
+    /**
+     * Initializes a new GameObject "Truck".
+     *
+     * @param gameView link GameObject to the current GameView
+     * @param gamePlayManager link GameObject to the GamePlayManager
+     * @param xCoordinate link xCoordinate to spawn the truck at this position
+     */
+    public Truck(GameView gameView, GamePlayManager gamePlayManager, int xCoordinate) {
+        super(gameView, gamePlayManager);
+        speedInPixel = 2;
+        size = 2.0;
+        width = 62;
+        height = 43;
+        distanceToBackground = 4;
+        this.position.updateCoordinates(new Position(xCoordinate, 500));
         hitBoxOffsets(0, 0, 0, 0);
     }
 

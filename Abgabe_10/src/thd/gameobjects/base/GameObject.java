@@ -20,7 +20,7 @@ public abstract class GameObject {
     protected double width;
     protected double height;
     protected char distanceToBackground;
-    protected int time;
+    protected int timeAtStart;
 
     /**
      * Crates a new GameObject.

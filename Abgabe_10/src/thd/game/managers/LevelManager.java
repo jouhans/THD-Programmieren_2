@@ -14,7 +14,6 @@ class LevelManager extends GameWorldManager{
         super(gameView);
     }
 
-
     @Override
     protected void initializeLevel() {
         super.initializeLevel();
@@ -29,7 +28,7 @@ class LevelManager extends GameWorldManager{
     }
 
     protected boolean hasNextLevel() {
-        return level !=levels.get(levels.size() - 1);
+        return level.number < levels.size();
     }
 
     protected void switchToNextLevel() {

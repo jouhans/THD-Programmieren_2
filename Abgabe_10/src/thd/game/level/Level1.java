@@ -14,7 +14,7 @@ public class Level1 extends Level{
      */
     public Level1() {
 
-        name = "Level 1";
+        name = "Trouble in the desert";
         number = 1;
 
         worldOffsetColumns = 20;
@@ -24,10 +24,10 @@ public class Level1 extends Level{
                                            \s
                                            \s
                                            \s
+                                           \s
         J            J       J             \s
              E             J               \s
                  E     E      E            \s
-                                           \s
                                            \s
                                            \s""";
 

@@ -24,6 +24,10 @@ public class GamePlayManager extends WorldShiftManager {
      * Points for killing the enemy Jet.
      */
     public static final int ENEMY_JET_POINTS = 200;
+    /**
+     * Points for survival of a Truck.
+     */
+    public static final int TRUCK_POINTS = 100;
 
     protected final GameObjectManager gameObjectManager;
     protected int points;

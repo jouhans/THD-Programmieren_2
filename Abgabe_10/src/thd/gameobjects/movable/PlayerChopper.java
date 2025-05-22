@@ -49,7 +49,7 @@ public class PlayerChopper extends CollidingGameObject implements MainCharacter 
 
     @Override
     public void reactToCollisionWith(CollidingGameObject other) {
-        if (other instanceof EnemyChopperShot || other instanceof EnemyJetBomb || other instanceof EnemyChopper || other instanceof EnemyJet) {
+        if (other instanceof EnemyChopperShot || other instanceof EnemyJetBomb || other instanceof EnemyChopper || other instanceof EnemyJet || other instanceof GuidedMissile) {
             gamePlayManager.lifeLost();
         }
     }

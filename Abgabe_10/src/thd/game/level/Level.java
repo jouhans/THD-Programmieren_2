@@ -7,27 +7,32 @@ package thd.game.level;
  */
 public class Level {
     /**
-     * Name of the Level.
+     * Name of the level.
      */
     public String name;
 
     /**
-     * Number of the Level.
+     * Difficulty of the level.
+     */
+    public static Difficulty difficulty = Difficulty.STANDARD;
+
+    /**
+     * Number of the level.
      */
     public int number;
 
     /**
-     * The World as a String. E = EnemyChopper, J = EnemyJet
+     * The world as a String. E = EnemyChopper, J = EnemyJet
      */
     public String world;
 
     /**
-     * Columns Offset of the World String.
+     * Columns offset of the world String.
      */
     public int worldOffsetColumns;
 
     /**
-     * Lines Offset of the world String.
+     * Lines offset of the world String.
      */
     public int worldOffsetLines;
 
