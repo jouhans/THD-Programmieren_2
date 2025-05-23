@@ -7,6 +7,7 @@ import thd.gameobjects.base.CollidingGameObject;
 import thd.gameobjects.base.Position;
 import thd.gameobjects.base.ShiftableGameObject;
 
+import java.awt.*;
 import java.util.Random;
 
 /**
@@ -22,6 +23,7 @@ public class EnemyChopper extends CollidingGameObject implements ShiftableGameOb
     private Random random;
     private enum State {MOVING_LEFT, MOVING_RIGHT}
     private State currentState;
+    private boolean active;
 
 
     /**
@@ -42,6 +44,7 @@ public class EnemyChopper extends CollidingGameObject implements ShiftableGameOb
         random = new Random();
         hitBoxOffsets(0, 0, 0, 0);
         currentState = State.MOVING_RIGHT;
+        active = false;
     }
 
     /**
@@ -63,6 +66,8 @@ public class EnemyChopper extends CollidingGameObject implements ShiftableGameOb
         random = new Random();
         hitBoxOffsets(0, 0, 0, 0);
         currentState = State.MOVING_RIGHT;
+        miniMapPosition = calculatePositionOnMinimap(position);
+        active = false;
     }
 
     @Override
@@ -82,6 +87,7 @@ public class EnemyChopper extends CollidingGameObject implements ShiftableGameOb
             currentState = State.MOVING_LEFT;
             position.left(speedInPixel);
         }
+        miniMapPosition = calculatePositionOnMinimap(position);
     }
 
     @Override
@@ -103,7 +109,9 @@ public class EnemyChopper extends CollidingGameObject implements ShiftableGameOb
             case MOVING_LEFT -> gameView.addImageToCanvas("enemychopper.png", position.getX(), position.getY(), size, rotation);
             case MOVING_RIGHT -> gameView.addImageToCanvas("enemychopper_mirrored.png", position.getX(), position.getY(), size, rotation);
         }
-
+        if (isVisibleOnMinimap(position, width)) {
+            gameView.addRectangleToCanvas(miniMapPosition.getX(), miniMapPosition.getY(), 10, 10, 0, true, Color.red);
+        }
     }
 
     @Override
@@ -113,9 +121,22 @@ public class EnemyChopper extends CollidingGameObject implements ShiftableGameOb
 
     @Override
     public boolean tryToActivate(EnemyChopper info) {
-        EnemyChopper tryToActivate = (EnemyChopper) info;
+        return !(info.position.getX() < 0) && !(info.position.getX() > 1280) && !(info.position.getY() < 0) && !(info.position.getY() > 720);
+    }
 
-        return !(tryToActivate.position.getX() < 0) && !(tryToActivate.position.getX() > 1280) && !(tryToActivate.position.getY() < 0) && !(tryToActivate.position.getY() > 720);
+    @Override
+    public void deactivate() {
+        active = false;
+    }
+
+    @Override
+    public void activate() {
+        active = true;
+    }
+
+    @Override
+    public boolean isActive() {
+        return active;
     }
 }
 

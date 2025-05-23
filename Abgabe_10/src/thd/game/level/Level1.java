@@ -25,7 +25,7 @@ public class Level1 extends Level{
                                            \s
                                            \s
                                            \s
-        J            J       J             \s
+            J        J       J             \s
              E             J               \s
                  E     E      E            \s
                                            \s

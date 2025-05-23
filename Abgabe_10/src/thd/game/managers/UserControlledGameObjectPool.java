@@ -2,8 +2,8 @@ package thd.game.managers;
 
 import thd.game.level.Level;
 import thd.game.utilities.GameView;
+import thd.gameobjects.movable.BackgroundAir;
 import thd.gameobjects.movable.PlayerChopper;
-import thd.gameobjects.movable.Truck;
 import thd.gameobjects.unmovable.*;
 
 import java.awt.*;
@@ -14,22 +14,22 @@ class UserControlledGameObjectPool {
     protected final GameView gameView;
     protected Level level;
 
-    protected Truck truck;
     protected PlayerChopper playerChopper;
 
     protected Life life;
     protected Score score;
     protected BackgroundGround backgroundGround;
 
+    protected BackgroundAir backgroundAir0;
     protected BackgroundAir backgroundAir1;
     protected BackgroundAir backgroundAir2;
     protected BackgroundAir backgroundAir3;
     protected BackgroundAir backgroundAir4;
     protected BackgroundAir backgroundAir5;
     protected BackgroundAir backgroundAir6;
-    protected BackgroundAir backgroundAir7;
 
     protected Overlay overlay;
+    protected Minimap minimap;
 
 
     UserControlledGameObjectPool(GameView gameView) {

@@ -3,6 +3,9 @@ package thd.game.managers;
 import thd.game.utilities.GameView;
 import thd.gameobjects.base.GameObject;
 
+import java.util.LinkedList;
+import java.util.List;
+
 
 /**
  * This class manages the gameplay, including the creation and destruction
@@ -32,11 +35,14 @@ public class GamePlayManager extends WorldShiftManager {
     protected final GameObjectManager gameObjectManager;
     protected int points;
     protected int lives;
+    protected List<GameObject> activatableGameObjects;
+
 
 
     protected GamePlayManager(GameView gameView) {
         super(gameView);
         gameObjectManager = new GameObjectManager();
+        activatableGameObjects = new LinkedList<>();
     }
 
     /**
@@ -59,6 +65,7 @@ public class GamePlayManager extends WorldShiftManager {
     public void destroyGameObject(GameObject gameObject) {
         super.destroyGameObject(gameObject);
         gameObjectManager.remove(gameObject);
+        activatableGameObjects.remove(gameObject);
     }
 
     /**

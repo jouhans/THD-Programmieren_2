@@ -6,14 +6,10 @@ import thd.gameobjects.base.Position;
 import thd.gameobjects.movable.*;
 import thd.gameobjects.unmovable.*;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Random;
+import java.util.*;
 
 class GameWorldManager extends GamePlayManager{
 
-    protected final List<GameObject> activatableGameObjects;
     private final Position referencePositionBackground;
     private final Random random;
     private int objectsPerZone;
@@ -26,22 +22,20 @@ class GameWorldManager extends GamePlayManager{
 
         referencePositionBackground = new Position(0, 0);
 
-        activatableGameObjects = new LinkedList<>();
-
         score = new Score(gameView, this);
         backgroundGround = new BackgroundGround(gameView, this);
 
-        backgroundAir1 = new BackgroundAir(gameView, this, new Position(referencePositionBackground.getX() + (-3 * 600), referencePositionBackground.getY()));
-        backgroundAir2 = new BackgroundAir(gameView, this, new Position(referencePositionBackground.getX() + (-2 * 600), referencePositionBackground.getY()));
-        backgroundAir3 = new BackgroundAir(gameView, this, new Position(referencePositionBackground.getX() + (-1 * 600), referencePositionBackground.getY()));
-        backgroundAir4 = new BackgroundAir(gameView, this, new Position(referencePositionBackground.getX(), referencePositionBackground.getY()));
-        backgroundAir5 = new BackgroundAir(gameView, this, new Position(referencePositionBackground.getX() + 600, referencePositionBackground.getY()));
-        backgroundAir6 = new BackgroundAir(gameView, this, new Position(referencePositionBackground.getX() + (2 * 600), referencePositionBackground.getY()));
-        backgroundAir7 = new BackgroundAir(gameView, this, new Position(referencePositionBackground.getX() + (3 * 600), referencePositionBackground.getY()));
+        backgroundAir0 = new BackgroundAir(gameView, this, new Position(referencePositionBackground.getX() + (-3 * 600), referencePositionBackground.getY()));
+        backgroundAir1 = new BackgroundAir(gameView, this, new Position(referencePositionBackground.getX() + (-2 * 600), referencePositionBackground.getY()));
+        backgroundAir2 = new BackgroundAir(gameView, this, new Position(referencePositionBackground.getX() + (-1 * 600), referencePositionBackground.getY()));
+        backgroundAir3 = new BackgroundAir(gameView, this, new Position(referencePositionBackground.getX(), referencePositionBackground.getY()));
+        backgroundAir4 = new BackgroundAir(gameView, this, new Position(referencePositionBackground.getX() + 600, referencePositionBackground.getY()));
+        backgroundAir5 = new BackgroundAir(gameView, this, new Position(referencePositionBackground.getX() + (2 * 600), referencePositionBackground.getY()));
+        backgroundAir6 = new BackgroundAir(gameView, this, new Position(referencePositionBackground.getX() + (3 * 600), referencePositionBackground.getY()));
 
         overlay = new Overlay(gameView, this);
+        minimap = new Minimap(gameView, this);
 
-        truck = new Truck(gameView, this);
         playerChopper = new PlayerChopper(gameView, this, backgroundGround);
 
         life = new Life(gameView, this);
@@ -62,23 +56,27 @@ class GameWorldManager extends GamePlayManager{
         spawnGameObject(life);
         spawnGameObject(score);
         spawnGameObject(backgroundGround);
+        spawnGameObject(backgroundAir0);
         spawnGameObject(backgroundAir1);
         spawnGameObject(backgroundAir2);
         spawnGameObject(backgroundAir3);
         spawnGameObject(backgroundAir4);
         spawnGameObject(backgroundAir5);
         spawnGameObject(backgroundAir6);
-        spawnGameObject(backgroundAir7);
         spawnGameObject(overlay);
+        spawnGameObject(minimap);
     }
 
     private void addActivatableGameObject(GameObject gameObject) {
         activatableGameObjects.add(gameObject);
         addToShiftableGameObjectsIfShiftable(gameObject);
     }
-    private void clearListsForPathDecisionsInGameObjects() {
 
+    protected void removeActivatableGameObject(GameObject gameObject) {
+        activatableGameObjects.remove(gameObject);
     }
+
+    private void clearListsForPathDecisionsInGameObjects() {}
 
     @Override
     protected void gameLoop() {
@@ -149,6 +147,5 @@ class GameWorldManager extends GamePlayManager{
                 }
             }
         }
-
     }
 }

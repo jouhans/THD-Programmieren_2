@@ -4,7 +4,7 @@ import thd.game.utilities.GameView;
 import thd.gameobjects.base.GameObject;
 import thd.gameobjects.base.Position;
 import thd.gameobjects.base.ShiftableGameObject;
-import thd.gameobjects.unmovable.BackgroundAir;
+import thd.gameobjects.movable.BackgroundAir;
 
 import java.util.LinkedList;
 import java.util.List;

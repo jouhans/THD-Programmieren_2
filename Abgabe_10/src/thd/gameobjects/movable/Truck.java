@@ -6,6 +6,8 @@ import thd.gameobjects.base.CollidingGameObject;
 import thd.gameobjects.base.Position;
 import thd.gameobjects.base.ShiftableGameObject;
 
+import java.awt.*;
+
 /**
  * Creates a new Truck Object using {@link Position} for the Position and using {@link GameView} to display it.
  * <p>
@@ -31,6 +33,7 @@ public class Truck extends CollidingGameObject implements ShiftableGameObject {
         distanceToBackground = 4;
         position.updateCoordinates(new Position(1720, 500));
         hitBoxOffsets(0, 0, 0, 0);
+        miniMapPosition = calculatePositionOnMinimap(position);
     }
 
     /**
@@ -47,8 +50,9 @@ public class Truck extends CollidingGameObject implements ShiftableGameObject {
         width = 62;
         height = 43;
         distanceToBackground = 4;
-        this.position.updateCoordinates(new Position(xCoordinate, 500));
+        position.updateCoordinates(new Position(xCoordinate, 500));
         hitBoxOffsets(0, 0, 0, 0);
+        miniMapPosition = calculatePositionOnMinimap(position);
     }
 
     @Override
@@ -64,6 +68,7 @@ public class Truck extends CollidingGameObject implements ShiftableGameObject {
     @Override
     public void updatePosition() {
         position.left(speedInPixel);
+        miniMapPosition = calculatePositionOnMinimap(position);
     }
 
     /**
@@ -72,6 +77,9 @@ public class Truck extends CollidingGameObject implements ShiftableGameObject {
     @Override
     public void addToCanvas() {
         gameView.addImageToCanvas("truck.png", position.getX(), position.getY(), size, rotation);
+        if (isVisibleOnMinimap(position, width)) {
+            gameView.addRectangleToCanvas(miniMapPosition.getX(), miniMapPosition.getY(), 10, 10, 0, true, Color.yellow);
+        }
     }
 
     @Override

@@ -17,10 +17,12 @@ public abstract class GameObject {
     protected double speedInPixel;
     protected double rotation;
     protected double size;
+    protected double miniMapsize;
     protected double width;
     protected double height;
     protected char distanceToBackground;
     protected int timeAtStart;
+    protected Position miniMapPosition;
 
     /**
      * Crates a new GameObject.
@@ -42,6 +44,24 @@ public abstract class GameObject {
      */
     public char getDistanceToBackground() {
         return distanceToBackground;
+    }
+
+    protected Position calculatePositionOnMinimap(Position worldPosition) {
+        double worldXMin = -1280;
+        double worldYMin = 0;
+        double scaleFactor = 5.0;
+
+        double minimapOriginX = 256;
+        double minimapOriginY = 560;
+
+        double minimapX = (worldPosition.getX() - worldXMin) / scaleFactor;
+        double minimapY = (worldPosition.getY() - worldYMin) / scaleFactor;
+
+        return new Position(minimapOriginX + minimapX, minimapOriginY + minimapY);
+    }
+
+    protected boolean isVisibleOnMinimap(Position worldPosition, double width) {
+        return worldPosition.getX() <= (2560 - width) && worldPosition.getX() >= -1280;
     }
 
     /**

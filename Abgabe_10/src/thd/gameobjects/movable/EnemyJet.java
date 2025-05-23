@@ -2,11 +2,9 @@ package thd.gameobjects.movable;
 
 import thd.game.managers.GamePlayManager;
 import thd.game.utilities.GameView;
-import thd.gameobjects.base.ActivatableGameObject;
-import thd.gameobjects.base.CollidingGameObject;
-import thd.gameobjects.base.Position;
-import thd.gameobjects.base.ShiftableGameObject;
+import thd.gameobjects.base.*;
 
+import java.awt.*;
 import java.util.Random;
 
 /**
@@ -22,6 +20,7 @@ public class EnemyJet extends CollidingGameObject implements ShiftableGameObject
     private final Random random;
     private enum State {MOVING_LEFT, MOVING_RIGHT};
     private State currentState;
+    private boolean active;
 
 
     /**
@@ -42,13 +41,17 @@ public class EnemyJet extends CollidingGameObject implements ShiftableGameObject
         shotDurationInMilliseconds = gameView.gameTimeInMilliseconds();
         hitBoxOffsets(0, 0, 0, 0);
         currentState = State.MOVING_RIGHT;
+        miniMapPosition = calculatePositionOnMinimap(position);
+        active = false;
     }
 
     @Override
     public void reactToCollisionWith(CollidingGameObject other) {
-        if (other instanceof PlayerChopperShot || other instanceof PlayerChopper) {
+        if (other instanceof PlayerChopperShot) {
             gamePlayManager.destroyGameObject(this);
             gamePlayManager.addPoints(GamePlayManager.ENEMY_JET_POINTS);
+        } else if (other instanceof PlayerChopper) {
+            gamePlayManager.destroyGameObject(this);
         }
     }
 
@@ -61,6 +64,7 @@ public class EnemyJet extends CollidingGameObject implements ShiftableGameObject
             currentState = State.MOVING_LEFT;
             position.left(speedInPixel);
         }
+        miniMapPosition = calculatePositionOnMinimap(position);
     }
 
     @Override
@@ -82,7 +86,9 @@ public class EnemyJet extends CollidingGameObject implements ShiftableGameObject
             case MOVING_LEFT -> gameView.addImageToCanvas("enemyjet.png", position.getX(), position.getY(), size, rotation);
             case MOVING_RIGHT -> gameView.addImageToCanvas("enemyjet_mirrored.png", position.getX(), position.getY(), size, rotation);
         }
-
+        if (isVisibleOnMinimap(position, width)) {
+            gameView.addRectangleToCanvas(miniMapPosition.getX(), miniMapPosition.getY(), 10, 10, 0, true, Color.gray);
+        }
     }
 
     @Override
@@ -92,9 +98,22 @@ public class EnemyJet extends CollidingGameObject implements ShiftableGameObject
 
     @Override
     public boolean tryToActivate(EnemyJet info) {
-        EnemyJet tryToActivate = (EnemyJet) info;
+        return !(position.getX() < 0) && !(position.getX() > 1280) || !(position.getY() < 0) && !(position.getY() > 720 && info != null);
+    }
 
-        return !(tryToActivate.position.getX() < 0) && !(tryToActivate.position.getX() > 1280) && !(tryToActivate.position.getY() < 0) && !(tryToActivate.position.getY() > 720);
+    @Override
+    public void deactivate() {
+        active = false;
+    }
+
+    @Override
+    public void activate() {
+        active = true;
+    }
+
+    @Override
+    public boolean isActive() {
+        return active;
     }
 }
 

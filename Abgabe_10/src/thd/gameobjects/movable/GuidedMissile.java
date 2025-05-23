@@ -66,6 +66,10 @@ public class GuidedMissile extends CollidingGameObject implements ShiftableGameO
 
     @Override
     public void updateStatus() {
+        if (gameView.gameTimeInMilliseconds() > timeAtStart + 3000) {
+            gamePlayManager.destroyGameObject(this);
+        }
+
         if (followingPlayer && timeAtStart + 1000 < gameView.gameTimeInMilliseconds()) {
             followingPlayer = false;
             speedInPixel = 8;
@@ -82,10 +86,6 @@ public class GuidedMissile extends CollidingGameObject implements ShiftableGameO
 
         if (followingPlayer) {
             calculateRotation();
-        }
-
-        if (gameView.gameTimeInMilliseconds() > timeAtStart + 3000) {
-            gamePlayManager.destroyGameObject(this);
         }
     }
 

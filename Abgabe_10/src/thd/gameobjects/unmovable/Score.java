@@ -29,10 +29,10 @@ public class Score extends GameObject {
         super(gameView, gamePlayManager);
         size = 30.0;
         rotation = 0.0;
-        width = 50;
+        width = 90;
         height = 10;
         distanceToBackground = 3;
-        position.updateCoordinates(new Position(640 - width/2, 0));
+        position.updateCoordinates(new Position(GameView.WIDTH/2.0 - width, 0));
         score = gamePlayManager.getPoints();
     }
 

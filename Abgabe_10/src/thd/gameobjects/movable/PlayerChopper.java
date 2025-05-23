@@ -7,6 +7,7 @@ import thd.gameobjects.base.MainCharacter;
 import thd.gameobjects.base.Position;
 import thd.gameobjects.unmovable.BackgroundGround;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,12 +46,13 @@ public class PlayerChopper extends CollidingGameObject implements MainCharacter 
         collidingGameObjectsForPathDecision = new ArrayList<>();
         collidingGameObjectsForPathDecision.add(backgroundGround);
         currentState = State.MOVING_RIGHT;
+        miniMapPosition = calculatePositionOnMinimap(position);
     }
 
     @Override
     public void reactToCollisionWith(CollidingGameObject other) {
-        if (other instanceof EnemyChopperShot || other instanceof EnemyJetBomb || other instanceof EnemyChopper || other instanceof EnemyJet || other instanceof GuidedMissile) {
-            gamePlayManager.lifeLost();
+            if (other instanceof EnemyChopperShot || other instanceof EnemyJetBomb || other instanceof EnemyChopper || other instanceof EnemyJet || other instanceof GuidedMissile) {
+                gamePlayManager.lifeLost();
         }
     }
 
@@ -60,11 +62,14 @@ public class PlayerChopper extends CollidingGameObject implements MainCharacter 
             case MOVING_LEFT -> gameView.addImageToCanvas("chopper.png", position.getX(), position.getY(), size, rotation);
             case MOVING_RIGHT -> gameView.addImageToCanvas("chopper_mirrored.png", position.getX(), position.getY(), size, rotation);
         }
-
+        if (isVisibleOnMinimap(position, width)) {
+            gameView.addRectangleToCanvas(miniMapPosition.getX(), miniMapPosition.getY(), 10, 10, 0, true, Color.yellow);
+        }
     }
 
     @Override
     public void updateStatus() {
+        miniMapPosition = calculatePositionOnMinimap(position);
     }
 
     /**
@@ -113,22 +118,10 @@ public class PlayerChopper extends CollidingGameObject implements MainCharacter 
 
     @Override
     public void shoot() {
-        switch (currentState) {
-            case MOVING_LEFT -> {
-                if (shotDurationInMilliseconds + 300 <= gameView.gameTimeInMilliseconds()) {
-                    PlayerChopperShot playerChopperShot = new PlayerChopperShot(gameView, gamePlayManager, position, currentState);
-                    gamePlayManager.spawnGameObject(playerChopperShot);
-                    shotDurationInMilliseconds = gameView.gameTimeInMilliseconds();
-                }
-            }
-            case MOVING_RIGHT -> {
-                if (shotDurationInMilliseconds + 300 <= gameView.gameTimeInMilliseconds()) {
-                    PlayerChopperShot playerChopperShot = new PlayerChopperShot(gameView, gamePlayManager, position, currentState);
-                    gamePlayManager.spawnGameObject(playerChopperShot);
-                    shotDurationInMilliseconds = gameView.gameTimeInMilliseconds();
-                }
-            }
-
+        if (shotDurationInMilliseconds + 300 <= gameView.gameTimeInMilliseconds()) {
+            PlayerChopperShot playerChopperShot = new PlayerChopperShot(gameView, gamePlayManager, position, currentState);
+            gamePlayManager.spawnGameObject(playerChopperShot);
+            shotDurationInMilliseconds = gameView.gameTimeInMilliseconds();
         }
     }
 

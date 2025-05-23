@@ -32,7 +32,6 @@ public class BackgroundGround extends CollidingGameObject {
 
     @Override
     public void reactToCollisionWith(CollidingGameObject other) {
-
     }
 
     /**

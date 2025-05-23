@@ -24,20 +24,22 @@ class GameManager extends LevelManager {
         if (endOfGame()) {
             if (!overlay.isMessageShown()) {
                 overlay.showMessage("Game Over");
+            }
                 if (gameView.timer(2000, 0, this)) {
                     overlay.stopShowing();
                     startNewGame();
-                }
+
             }
         } else if (endOfLevel()) {
             if (!overlay.isMessageShown()) {
                 overlay.showMessage("Great Job");
+            }
                 if (gameView.timer(2000, 0, this)) {
                     overlay.stopShowing();
                     updatePointsAfterLevel();
                     switchToNextLevel();
                     initializeLevel();
-                }
+
             }
         }
     }
@@ -75,14 +77,16 @@ class GameManager extends LevelManager {
         }
         return true;
     }
-
     private boolean endOfGame() {
+        boolean trucks = false;
         for (GameObject gameObject: gameObjects) {
             if (gameObject instanceof Truck) {
-                return false;
+                trucks = true;
+                break;
             }
         }
-        return lives == 0 || (!hasNextLevel() && endOfLevel());
+        return !trucks || lives == 0 || (!hasNextLevel() && endOfLevel());
+
     }
 
     private void startNewGame() {
