@@ -1,5 +1,6 @@
 package thd.gameobjects.movable;
 
+import thd.game.level.Level;
 import thd.game.managers.GamePlayManager;
 import thd.game.utilities.GameView;
 import thd.gameobjects.base.CollidingGameObject;
@@ -32,7 +33,12 @@ public class GuidedMissile extends CollidingGameObject implements ShiftableGameO
         super(gameView, gamePlayManager);
         this.playerChopper = playerChopper;
         followingPlayer = true;
-        speedInPixel = 4;
+        switch (Level.difficulty) {
+            case STANDARD -> speedInPixel = 4;
+            case EASY -> speedInPixel = 2;
+            case HARD -> speedInPixel = 5;
+            case IMPOSSIBLE -> speedInPixel = 8;
+        }
         size = 0.6;
         width = 50;
         height = 25;
@@ -72,7 +78,7 @@ public class GuidedMissile extends CollidingGameObject implements ShiftableGameO
 
         if (followingPlayer && timeAtStart + 1000 < gameView.gameTimeInMilliseconds()) {
             followingPlayer = false;
-            speedInPixel = 8;
+            speedInPixel += 2;
 
             double dx = playerChopper.getPosition().getX() - position.getX();
             double dy = playerChopper.getPosition().getY() - position.getY();

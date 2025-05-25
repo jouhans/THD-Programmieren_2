@@ -72,10 +72,6 @@ class GameWorldManager extends GamePlayManager{
         addToShiftableGameObjectsIfShiftable(gameObject);
     }
 
-    protected void removeActivatableGameObject(GameObject gameObject) {
-        activatableGameObjects.remove(gameObject);
-    }
-
     private void clearListsForPathDecisionsInGameObjects() {}
 
     @Override

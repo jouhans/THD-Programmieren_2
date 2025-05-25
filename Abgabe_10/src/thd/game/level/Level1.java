@@ -17,6 +17,15 @@ public class Level1 extends Level{
         name = "Trouble in the desert";
         number = 1;
 
+        switch (difficulty) {
+            case STANDARD -> {}
+            case EASY -> {}
+            case HARD -> {}
+            case IMPOSSIBLE -> {}
+
+        }
+
+
         worldOffsetColumns = 20;
         worldOffsetLines = 3;
 

@@ -1,5 +1,6 @@
 package thd.gameobjects.movable;
 
+import thd.game.level.Level;
 import thd.game.managers.GamePlayManager;
 import thd.game.utilities.GameView;
 import thd.gameobjects.base.CollidingGameObject;
@@ -31,7 +32,12 @@ class EnemyChopperShot extends CollidingGameObject implements ShiftableGameObjec
      */
     protected EnemyChopperShot(GameView gameView, GamePlayManager gamePlayManager, Position position) {
         super(gameView, gamePlayManager);
-        speedInPixel = 6;
+        switch (Level.difficulty) {
+            case STANDARD -> speedInPixel = 6;
+            case EASY -> speedInPixel = 4;
+            case HARD -> speedInPixel = 7;
+            case IMPOSSIBLE -> speedInPixel = 9;
+        }
         size = 0.4;
         width = 28;
         height = 25;

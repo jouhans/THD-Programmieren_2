@@ -1,5 +1,6 @@
 package thd.gameobjects.movable;
 
+import thd.game.level.Level;
 import thd.game.managers.GamePlayManager;
 import thd.game.utilities.GameView;
 import thd.gameobjects.base.CollidingGameObject;
@@ -28,7 +29,12 @@ class EnemyJetBomb extends CollidingGameObject implements ShiftableGameObject {
      */
     protected EnemyJetBomb(GameView gameView, GamePlayManager gamePlayManager, Position position) {
         super(gameView, gamePlayManager);
-        speedInPixel = 4;
+        switch (Level.difficulty) {
+            case STANDARD -> speedInPixel = 4;
+            case EASY -> speedInPixel = 2;
+            case HARD -> speedInPixel = 5;
+            case IMPOSSIBLE -> speedInPixel = 8;
+        }
         size = 2.0;
         width = 16;
         height = 35;

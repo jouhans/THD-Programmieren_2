@@ -51,7 +51,7 @@ public class PlayerChopper extends CollidingGameObject implements MainCharacter 
 
     @Override
     public void reactToCollisionWith(CollidingGameObject other) {
-            if (other instanceof EnemyChopperShot || other instanceof EnemyJetBomb || other instanceof EnemyChopper || other instanceof EnemyJet || other instanceof GuidedMissile) {
+        if (other instanceof EnemyChopperShot || other instanceof EnemyJetBomb || other instanceof EnemyChopper || other instanceof EnemyJet || other instanceof GuidedMissile) {
                 gamePlayManager.lifeLost();
         }
     }
@@ -63,7 +63,7 @@ public class PlayerChopper extends CollidingGameObject implements MainCharacter 
             case MOVING_RIGHT -> gameView.addImageToCanvas("chopper_mirrored.png", position.getX(), position.getY(), size, rotation);
         }
         if (isVisibleOnMinimap(position, width)) {
-            gameView.addRectangleToCanvas(miniMapPosition.getX(), miniMapPosition.getY(), 10, 10, 0, true, Color.yellow);
+            gameView.addRectangleToCanvas(miniMapPosition.getX(), miniMapPosition.getY(), 10, 10, 0, true, Color.green);
         }
     }
 

@@ -1,5 +1,6 @@
 package thd.gameobjects.movable;
 
+import thd.game.level.Level;
 import thd.game.managers.GamePlayManager;
 import thd.game.utilities.GameView;
 import thd.gameobjects.base.ActivatableGameObject;
@@ -24,6 +25,7 @@ public class EnemyChopper extends CollidingGameObject implements ShiftableGameOb
     private enum State {MOVING_LEFT, MOVING_RIGHT}
     private State currentState;
     private boolean active;
+    private int minEnemyChopperShotRate;
 
 
     /**
@@ -34,7 +36,18 @@ public class EnemyChopper extends CollidingGameObject implements ShiftableGameOb
      */
     public EnemyChopper(GameView gameView, GamePlayManager gamePlayManager) {
         super(gameView, gamePlayManager);
-        speedInPixel = 3;
+        switch (Level.difficulty) {
+            case STANDARD -> minEnemyChopperShotRate = 2;
+            case EASY -> minEnemyChopperShotRate = 4;
+            case HARD -> minEnemyChopperShotRate = 1;
+            case IMPOSSIBLE -> minEnemyChopperShotRate = 0;
+        }
+        switch (Level.difficulty) {
+            case STANDARD -> speedInPixel = 3;
+            case EASY -> speedInPixel = 2;
+            case HARD -> speedInPixel = 4;
+            case IMPOSSIBLE -> speedInPixel = 6;
+        }
         size = 1.0;
         width = 85;
         height = 50;
@@ -44,29 +57,6 @@ public class EnemyChopper extends CollidingGameObject implements ShiftableGameOb
         random = new Random();
         hitBoxOffsets(0, 0, 0, 0);
         currentState = State.MOVING_RIGHT;
-        active = false;
-    }
-
-    /**
-     * Initializes a new GameObject "EnemyChopper".
-     *
-     * @param gameView link GameObject to the current GameView
-     * @param gamePlayManager link GameObject to the GamePlayManager
-     * @param position set a start Position
-     */
-    public EnemyChopper(GameView gameView, GamePlayManager gamePlayManager, Position position) {
-        this(gameView, gamePlayManager);
-        speedInPixel = 3;
-        size = 1.0;
-        width = 85;
-        height = 50;
-        distanceToBackground = 4;
-        position.updateCoordinates(position);
-        shotDurationInMilliseconds = gameView.gameTimeInMilliseconds();
-        random = new Random();
-        hitBoxOffsets(0, 0, 0, 0);
-        currentState = State.MOVING_RIGHT;
-        miniMapPosition = calculatePositionOnMinimap(position);
         active = false;
     }
 
@@ -96,7 +86,7 @@ public class EnemyChopper extends CollidingGameObject implements ShiftableGameOb
     }
 
     private void shoot() {
-        int randomNumber = random.nextInt(3) + 2;
+        int randomNumber = random.nextInt(3) + minEnemyChopperShotRate;
         if (shotDurationInMilliseconds + (randomNumber * 1000) <= gameView.gameTimeInMilliseconds()) {
             gamePlayManager.spawnGameObject(new EnemyChopperShot(gameView, gamePlayManager, position));
             shotDurationInMilliseconds = gameView.gameTimeInMilliseconds();

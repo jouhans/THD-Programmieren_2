@@ -1,5 +1,6 @@
 package thd.gameobjects.movable;
 
+import thd.game.level.Level;
 import thd.game.managers.GamePlayManager;
 import thd.game.utilities.GameView;
 import thd.gameobjects.base.*;
@@ -21,6 +22,7 @@ public class EnemyJet extends CollidingGameObject implements ShiftableGameObject
     private enum State {MOVING_LEFT, MOVING_RIGHT};
     private State currentState;
     private boolean active;
+    private int minJetBombDropRate;
 
 
     /**
@@ -32,7 +34,18 @@ public class EnemyJet extends CollidingGameObject implements ShiftableGameObject
     public EnemyJet(GameView gameView, GamePlayManager gamePlayManager) {
         super(gameView, gamePlayManager);
         random = new Random();
-        speedInPixel = 4;
+        switch (Level.difficulty) {
+            case STANDARD -> minJetBombDropRate = 3;
+            case EASY -> minJetBombDropRate = 4;
+            case HARD -> minJetBombDropRate = 2;
+            case IMPOSSIBLE -> minJetBombDropRate = 0;
+        }
+        switch (Level.difficulty) {
+            case STANDARD -> speedInPixel = 3;
+            case EASY -> speedInPixel = 2;
+            case HARD -> speedInPixel = 4;
+            case IMPOSSIBLE -> speedInPixel = 6;
+        }
         size = 2.0;
         width = 80;
         height = 30;
@@ -47,11 +60,9 @@ public class EnemyJet extends CollidingGameObject implements ShiftableGameObject
 
     @Override
     public void reactToCollisionWith(CollidingGameObject other) {
-        if (other instanceof PlayerChopperShot) {
+        if (other instanceof PlayerChopperShot || other instanceof PlayerChopper) {
             gamePlayManager.destroyGameObject(this);
             gamePlayManager.addPoints(GamePlayManager.ENEMY_JET_POINTS);
-        } else if (other instanceof PlayerChopper) {
-            gamePlayManager.destroyGameObject(this);
         }
     }
 
@@ -69,7 +80,7 @@ public class EnemyJet extends CollidingGameObject implements ShiftableGameObject
 
     @Override
     public void updateStatus() {
-        int randomNumber = random.nextInt(3) + 3;
+        int randomNumber = random.nextInt(3) + minJetBombDropRate;
         if (shotDurationInMilliseconds + (randomNumber * 1000) <= gameView.gameTimeInMilliseconds()) {
             drop();
         }
