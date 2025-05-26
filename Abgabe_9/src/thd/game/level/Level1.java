@@ -14,22 +14,23 @@ public class Level1 extends Level{
      */
     public Level1() {
 
-        name = "Level 1";
+        name = "Trouble in the desert";
         number = 1;
 
-        worldOffsetColumns = 20;
+        worldOffsetColumns = 10;
         worldOffsetLines = 3;
 
         world = """
                                            \s
                                            \s
                                            \s
-        J            J       J             \s
-             E             J               \s
+                                           \s
+            J        J       J             \s
+       J     E             J            E  \s
                  E     E      E            \s
                                            \s
-                                           \s
                                            \s""";
+
 
     }
 }

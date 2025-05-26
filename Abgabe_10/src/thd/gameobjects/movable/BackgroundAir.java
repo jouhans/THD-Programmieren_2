@@ -2,7 +2,7 @@ package thd.gameobjects.movable;
 
 import thd.game.managers.GamePlayManager;
 import thd.game.utilities.GameView;
-import thd.gameobjects.base.CollidingGameObject;
+import thd.gameobjects.base.GameObject;
 import thd.gameobjects.base.Position;
 import thd.gameobjects.base.ShiftableGameObject;
 
@@ -16,7 +16,7 @@ import java.awt.*;
  * @see Position
  * @see GameView
  */
-public class BackgroundAir extends CollidingGameObject implements ShiftableGameObject {
+public class BackgroundAir extends GameObject implements ShiftableGameObject {
     /**
      * Initializes a new GameObject "BackgroundAir".
      *
@@ -32,11 +32,7 @@ public class BackgroundAir extends CollidingGameObject implements ShiftableGameO
         height = 175;
         distanceToBackground = 0;
         this.position.updateCoordinates(new Position(position.getX(), position.getY()));
-        hitBoxOffsets(0, 0, 0, 0);
     }
-
-    @Override
-    public void reactToCollisionWith(CollidingGameObject other) {}
 
     @Override
     public void updatePosition() {

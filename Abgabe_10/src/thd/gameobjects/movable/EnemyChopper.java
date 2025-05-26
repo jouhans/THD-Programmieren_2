@@ -12,26 +12,32 @@ import java.awt.*;
 import java.util.Random;
 
 /**
- * Creates a new enemy helicopter Object using {@link Position} for the Position and using {@link GameView} to display it.
+ * Creates a new enemy helicopter Object using {@link Position} for the Position
+ * and using {@link GameView} to display it.
  * <p>
- * This class provides methodes to update the Position and to add the Object to the GameView.
+ * This class provides methodes to update the Position and to add the Object to
+ * the GameView.
  *
  * @see Position
  * @see GameView
  */
-public class EnemyChopper extends CollidingGameObject implements ShiftableGameObject, ActivatableGameObject<EnemyChopper> {
+public class EnemyChopper extends CollidingGameObject
+        implements ShiftableGameObject, ActivatableGameObject<EnemyChopper> {
     private int shotDurationInMilliseconds;
     private Random random;
-    private enum State {MOVING_LEFT, MOVING_RIGHT}
+
+    private enum State {
+        MOVING_LEFT, MOVING_RIGHT
+    }
+
     private State currentState;
     private boolean active;
     private int minEnemyChopperShotRate;
 
-
     /**
      * Initializes a new GameObject "EnemyChopper".
      *
-     * @param gameView link GameObject to the current GameView
+     * @param gameView        link GameObject to the current GameView
      * @param gamePlayManager link GameObject to the GamePlayManager
      */
     public EnemyChopper(GameView gameView, GamePlayManager gamePlayManager) {
@@ -96,8 +102,10 @@ public class EnemyChopper extends CollidingGameObject implements ShiftableGameOb
     @Override
     public void addToCanvas() {
         switch (currentState) {
-            case MOVING_LEFT -> gameView.addImageToCanvas("enemychopper.png", position.getX(), position.getY(), size, rotation);
-            case MOVING_RIGHT -> gameView.addImageToCanvas("enemychopper_mirrored.png", position.getX(), position.getY(), size, rotation);
+            case MOVING_LEFT ->
+                gameView.addImageToCanvas("enemychopper.png", position.getX(), position.getY(), size, rotation);
+            case MOVING_RIGHT -> gameView.addImageToCanvas("enemychopper_mirrored.png", position.getX(),
+                    position.getY(), size, rotation);
         }
         if (isVisibleOnMinimap(position, width)) {
             gameView.addRectangleToCanvas(miniMapPosition.getX(), miniMapPosition.getY(), 10, 10, 0, true, Color.red);
@@ -111,7 +119,8 @@ public class EnemyChopper extends CollidingGameObject implements ShiftableGameOb
 
     @Override
     public boolean tryToActivate(EnemyChopper info) {
-        return !(info.position.getX() < 0) && !(info.position.getX() > 1280) && !(info.position.getY() < 0) && !(info.position.getY() > 720);
+        return !(info.position.getX() < 0) && !(info.position.getX() > 1280) && !(info.position.getY() < 0)
+                && !(info.position.getY() > 720);
     }
 
     @Override
@@ -129,4 +138,3 @@ public class EnemyChopper extends CollidingGameObject implements ShiftableGameOb
         return active;
     }
 }
-

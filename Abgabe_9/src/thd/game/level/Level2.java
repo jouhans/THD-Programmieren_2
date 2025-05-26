@@ -14,21 +14,21 @@ public class Level2 extends Level{
      */
     public Level2() {
 
-        name = "Level 2";
+        name = "Chopper Backup";
         number = 2;
 
-        worldOffsetColumns = 20;
+        worldOffsetColumns = 10;
         worldOffsetLines = 3;
 
         world = """
                                            \s
                                            \s
-                     J       J             \s
-             E                             \s
-                 E     E      J            \s
-                     J       E      J      \s
-                        E                  \s
                                            \s
+    E                                      \s
+                 E     E      E          E \s
+          E          J       E      J      \s
+                 J      E        J         \s
+      E                                    \s
                                            \s""";
 
     }

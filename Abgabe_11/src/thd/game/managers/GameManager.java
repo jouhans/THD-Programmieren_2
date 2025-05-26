@@ -28,6 +28,7 @@ class GameManager extends LevelManager {
                 if (gameView.timer(2000, 0, this)) {
                     overlay.stopShowing();
                     startNewGame();
+
             }
         } else if (endOfLevel()) {
             if (!overlay.isMessageShown()) {

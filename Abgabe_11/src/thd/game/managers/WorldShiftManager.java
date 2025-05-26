@@ -35,6 +35,7 @@ public class WorldShiftManager extends UserControlledGameObjectPool {
     protected void destroyGameObject(GameObject gameObject) {
         if (gameObject instanceof ShiftableGameObject) {
             shiftableGameObjects.remove(gameObject);
+
         }
     }
 

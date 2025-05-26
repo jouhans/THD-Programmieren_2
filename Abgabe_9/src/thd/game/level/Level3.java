@@ -14,21 +14,21 @@ public class Level3 extends Level{
      */
     public Level3() {
 
-        name = "Level 3";
+        name = "Jet Invasion";
         number = 3;
 
-        worldOffsetColumns = 20;
+        worldOffsetColumns = 10;
         worldOffsetLines = 3;
 
         world = """
                                            \s
                                            \s
                                            \s
-                           J               \s
-                 J     J      J            \s
-                    E      E               \s
-                E        E          E      \s
-                                           \s
+               J                     J     \s
+      J    J           J      J           J\s
+   J          J            J               \s
+                J        E          J      \s
+      J                       J            \s
                                            \s""";
 
     }

@@ -23,6 +23,9 @@ public class EnemyJet extends CollidingGameObject implements ShiftableGameObject
     private final Random random;
     private enum State {MOVING_LEFT, MOVING_RIGHT};
     private State currentState;
+    private MovingState movingState;
+
+    private enum MovingState {MOVE_STATE1, MOVE_STATE2, MOVE_STATE3}
 
 
     /**
@@ -44,6 +47,7 @@ public class EnemyJet extends CollidingGameObject implements ShiftableGameObject
         shotDurationInMilliseconds = gameView.gameTimeInMilliseconds();
         hitBoxOffsets(0, 0, 0, 0);
         currentState = State.MOVING_RIGHT;
+        movingState = MovingState.MOVE_STATE1;
     }
 
     @Override
@@ -81,10 +85,60 @@ public class EnemyJet extends CollidingGameObject implements ShiftableGameObject
     @Override
     public void addToCanvas() {
         switch (currentState) {
-            case MOVING_LEFT -> gameView.addImageToCanvas("enemyjet.png", position.getX(), position.getY(), size, rotation);
-            case MOVING_RIGHT -> gameView.addImageToCanvas("enemyjet_mirrored.png", position.getX(), position.getY(), size, rotation);
+            case MOVING_LEFT -> {
+                gameView.addImageToCanvas("enemyjet.png", position.getX(), position.getY(), size, rotation);
+                switch (movingState) {
+                    case MOVE_STATE1 -> {
+                        gameView.addImageToCanvas("enemyjet_moveanimation1.png", position.getX() + 80, position.getY() + 10, 2, rotation);
+                        if (gameView.timer(80, 0, this)) {
+                            switchmovingState();
+                        }
+                    }
+                    case MOVE_STATE2 -> {
+                        gameView.addImageToCanvas("enemyjet_moveanimation2.png", position.getX() + 80, position.getY() + 10, 2, rotation);
+                        if (gameView.timer(80, 0, this)) {
+                            switchmovingState();
+                        }
+                    }
+                    case MOVE_STATE3 -> {
+                        gameView.addImageToCanvas("enemyjet_moveanimation3.png", position.getX() + 80, position.getY() + 10, 2, rotation);
+                        if (gameView.timer(80, 0, this)) {
+                            switchmovingState();
+                        }
+                    }
+                }
+            }
+            case MOVING_RIGHT -> {
+                gameView.addImageToCanvas("enemyjet_mirrored.png", position.getX(), position.getY(), size, rotation);
+                switch (movingState) {
+                    case MOVE_STATE1 -> {
+                        gameView.addImageToCanvas("enemyjet_moveanimation1_mirrored.png", position.getX() - 20, position.getY() + 10, 2, rotation);
+                        if (gameView.timer(80, 0, this)) {
+                            switchmovingState();
+                        }
+                    }
+                    case MOVE_STATE2 -> {
+                        gameView.addImageToCanvas("enemyjet_moveanimation2_mirrored.png", position.getX() - 20, position.getY() + 10, 2, rotation);
+                        if (gameView.timer(80, 0, this)) {
+                            switchmovingState();
+                        }
+                    }
+                    case MOVE_STATE3 -> {
+                        gameView.addImageToCanvas("enemyjet_moveanimation3_mirrored.png", position.getX() - 20, position.getY() + 10, 2, rotation);
+                        if (gameView.timer(80, 0, this)) {
+                            switchmovingState();
+                        }
+                    }
+                }
+            }
         }
 
+
+    }
+
+    private void switchmovingState() {
+        int nextState = (movingState.ordinal() + 1) % EnemyJet.MovingState.values().length;
+        movingState = EnemyJet.MovingState.values()[nextState];
     }
 
     @Override

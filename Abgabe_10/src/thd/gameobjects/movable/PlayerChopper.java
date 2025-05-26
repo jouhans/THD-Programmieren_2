@@ -12,9 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Creates a new Player helicopter Object using {@link Position} for the Position and using {@link GameView} to display it.
+ * Creates a new Player helicopter Object using {@link Position} for the
+ * Position and using {@link GameView} to display it.
  * <p>
- * This class provides methodes to update the Position and to add the Object to the GameView.
+ * This class provides methodes to update the Position and to add the Object to
+ * the GameView.
  *
  * @see Position
  * @see GameView
@@ -22,14 +24,19 @@ import java.util.List;
 public class PlayerChopper extends CollidingGameObject implements MainCharacter {
     private final List<CollidingGameObject> collidingGameObjectsForPathDecision;
     private int shotDurationInMilliseconds;
-    enum State {MOVING_LEFT, MOVING_RIGHT};
+    private long lastCollisionTime;
+
+    enum State {
+        MOVING_LEFT, MOVING_RIGHT
+    }
+
     private State currentState;
 
     /**
      * Initializes a new GameObject "Player Helicopter".
      *
-     * @param gameView link GameObject to the current GameView
-     * @param gamePlayManager link GameObject to the GamePlayManager
+     * @param gameView         link GameObject to the current GameView
+     * @param gamePlayManager  link GameObject to the GamePlayManager
      * @param backgroundGround link ground to the PlayerChopper
      */
     public PlayerChopper(GameView gameView, GamePlayManager gamePlayManager, BackgroundGround backgroundGround) {
@@ -42,6 +49,7 @@ public class PlayerChopper extends CollidingGameObject implements MainCharacter 
         distanceToBackground = 4;
         position.updateCoordinates(new Position(640, 360));
         shotDurationInMilliseconds = gameView.gameTimeInMilliseconds();
+        lastCollisionTime = 0;
         hitBoxOffsets(0, 0, 0, 0);
         collidingGameObjectsForPathDecision = new ArrayList<>();
         collidingGameObjectsForPathDecision.add(backgroundGround);
@@ -51,16 +59,24 @@ public class PlayerChopper extends CollidingGameObject implements MainCharacter 
 
     @Override
     public void reactToCollisionWith(CollidingGameObject other) {
-        if (other instanceof EnemyChopperShot || other instanceof EnemyJetBomb || other instanceof EnemyChopper || other instanceof EnemyJet || other instanceof GuidedMissile) {
+        if (other instanceof EnemyChopperShot || other instanceof EnemyJetBomb || other instanceof EnemyChopper
+                || other instanceof EnemyJet || other instanceof GuidedMissile) {
+            // Verhindere mehrfache Lebensverluste im selben Frame (innerhalb von 100ms)
+            long currentTime = gameView.gameTimeInMilliseconds();
+            if (currentTime - lastCollisionTime > 100) {
                 gamePlayManager.lifeLost();
+                lastCollisionTime = currentTime;
+            }
         }
     }
 
     @Override
     public void addToCanvas() {
         switch (currentState) {
-            case MOVING_LEFT -> gameView.addImageToCanvas("chopper.png", position.getX(), position.getY(), size, rotation);
-            case MOVING_RIGHT -> gameView.addImageToCanvas("chopper_mirrored.png", position.getX(), position.getY(), size, rotation);
+            case MOVING_LEFT ->
+                gameView.addImageToCanvas("chopper.png", position.getX(), position.getY(), size, rotation);
+            case MOVING_RIGHT ->
+                gameView.addImageToCanvas("chopper_mirrored.png", position.getX(), position.getY(), size, rotation);
         }
         if (isVisibleOnMinimap(position, width)) {
             gameView.addRectangleToCanvas(miniMapPosition.getX(), miniMapPosition.getY(), 10, 10, 0, true, Color.green);
@@ -119,7 +135,8 @@ public class PlayerChopper extends CollidingGameObject implements MainCharacter 
     @Override
     public void shoot() {
         if (shotDurationInMilliseconds + 300 <= gameView.gameTimeInMilliseconds()) {
-            PlayerChopperShot playerChopperShot = new PlayerChopperShot(gameView, gamePlayManager, position, currentState);
+            PlayerChopperShot playerChopperShot = new PlayerChopperShot(gameView, gamePlayManager, position,
+                    currentState);
             gamePlayManager.spawnGameObject(playerChopperShot);
             shotDurationInMilliseconds = gameView.gameTimeInMilliseconds();
         }
@@ -130,4 +147,3 @@ public class PlayerChopper extends CollidingGameObject implements MainCharacter 
         return "Player Chopper: " + position;
     }
 }
-
