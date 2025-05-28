@@ -73,6 +73,7 @@ public class EnemyJet extends CollidingGameObject implements ShiftableGameObject
     public void reactToCollisionWith(CollidingGameObject other) {
         if (other instanceof PlayerChopperShot || other instanceof PlayerChopper) {
             gamePlayManager.destroyGameObject(this);
+            gameView.playSound("explosion.wav", false);
             gamePlayManager.addPoints(GamePlayManager.ENEMY_JET_POINTS);
         }
     }
@@ -157,6 +158,9 @@ public class EnemyJet extends CollidingGameObject implements ShiftableGameObject
                     }
                 }
             }
+        }
+        if (isVisibleOnMinimap(position, width)) {
+            gameView.addRectangleToCanvas(miniMapPosition.getX(), miniMapPosition.getY(), 10, 10, 0, true, Color.gray);
         }
     }
 

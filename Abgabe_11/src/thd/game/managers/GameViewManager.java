@@ -35,6 +35,7 @@ public class GameViewManager {
         gameView.updateWindowIcon("icon.png");
         gameView.updateBackgroundColor(Color.gray);
         gameManager = new GameManager(gameView);
+        gameView.showStatistic(true);
         startGameLoop();
     }
     private void startGameLoop() {

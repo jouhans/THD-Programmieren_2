@@ -63,6 +63,7 @@ class PlayerChopperShot extends CollidingGameObject implements ShiftableGameObje
     public void reactToCollisionWith(CollidingGameObject other) {
         if (other instanceof EnemyJetBomb || other instanceof EnemyChopperShot || other instanceof EnemyJet || other instanceof EnemyChopper) {
             gamePlayManager.destroyGameObject(this);
+            gameView.playSound("small_explosion.wav", false);
         }
     }
 }

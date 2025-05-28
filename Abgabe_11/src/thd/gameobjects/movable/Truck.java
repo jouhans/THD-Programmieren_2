@@ -17,25 +17,6 @@ import java.awt.*;
  * @see GameView
  */
 public class Truck extends CollidingGameObject implements ShiftableGameObject {
-
-    /**
-     * Initializes a new GameObject "Truck".
-     *
-     * @param gameView link GameObject to the current GameView
-     * @param gamePlayManager link GameObject to the GamePlayManager
-     */
-    public Truck(GameView gameView, GamePlayManager gamePlayManager) {
-        super(gameView, gamePlayManager);
-        speedInPixel = 2;
-        size = 2.0;
-        width = 62;
-        height = 43;
-        distanceToBackground = 4;
-        position.updateCoordinates(new Position(1720, 500));
-        hitBoxOffsets(0, 0, 0, 0);
-        miniMapPosition = calculatePositionOnMinimap(position);
-    }
-
     /**
      * Initializes a new GameObject "Truck".
      *
@@ -59,6 +40,7 @@ public class Truck extends CollidingGameObject implements ShiftableGameObject {
     public void reactToCollisionWith(CollidingGameObject other) {
         if (other instanceof EnemyJetBomb) {
             gamePlayManager.destroyGameObject(this);
+            gameView.playSound("explosion.wav", false);
         }
     }
 

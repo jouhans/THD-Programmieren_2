@@ -15,7 +15,7 @@ import java.util.Random;
  * Creates a new enemy helicopter Object using {@link Position} for the Position
  * and using {@link GameView} to display it.
  * <p>
- * This class provides methodes to update the Position and to add the Object to
+ * This class provides methods to update the Position and to add the Object to
  * the GameView.
  *
  * @see Position
@@ -24,7 +24,7 @@ import java.util.Random;
 public class EnemyChopper extends CollidingGameObject
         implements ShiftableGameObject, ActivatableGameObject<EnemyChopper> {
     private int shotDurationInMilliseconds;
-    private Random random;
+    private final Random random;
 
     private enum State {
         MOVING_LEFT, MOVING_RIGHT
@@ -70,6 +70,7 @@ public class EnemyChopper extends CollidingGameObject
     public void reactToCollisionWith(CollidingGameObject other) {
         if (other instanceof PlayerChopperShot || other instanceof PlayerChopper) {
             gamePlayManager.destroyGameObject(this);
+            gameView.playSound("explosion.wav", false);
             gamePlayManager.addPoints(GamePlayManager.ENEMY_CHOPPER_POINTS);
         }
     }

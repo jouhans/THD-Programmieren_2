@@ -8,6 +8,8 @@ import thd.gameobjects.base.Position;
 import thd.gameobjects.base.ShiftableGameObject;
 import thd.gameobjects.unmovable.BackgroundGround;
 
+import java.awt.*;
+
 /**
  * Creates a new enemy helicopter Object using {@link Position} for the Position and using {@link GameView} to display it.
  * <p>
@@ -43,16 +45,21 @@ class EnemyJetBomb extends CollidingGameObject implements ShiftableGameObject {
         shotCorrectionYCoordinate = 20;
         this.position.updateCoordinates(position.getX() + shotCorrectionXCoordinate, position.getY() + shotCorrectionYCoordinate);
         hitBoxOffsets(0, 0, 0, 0);
+        miniMapPosition = calculatePositionOnMinimap(position);
     }
 
     @Override
     public void updatePosition() {
         position.down(speedInPixel);
+        miniMapPosition = calculatePositionOnMinimap(position);
     }
 
     @Override
     public void addToCanvas() {
         gameView.addImageToCanvas("enemyjetbomb.png", position.getX(), position.getY(), size, rotation);
+        if (isVisibleOnMinimap(position, width)) {
+            gameView.addRectangleToCanvas(miniMapPosition.getX(), miniMapPosition.getY(), 5, 15, 0, true, Color.blue);
+        }
     }
 
     @Override
@@ -64,6 +71,7 @@ class EnemyJetBomb extends CollidingGameObject implements ShiftableGameObject {
     public void reactToCollisionWith(CollidingGameObject other) {
         if (other instanceof PlayerChopperShot || other instanceof PlayerChopper || other instanceof BackgroundGround) {
             gamePlayManager.destroyGameObject(this);
+            gameView.playSound("enemyjetbombexplosion.wav", false);
         }
     }
 }

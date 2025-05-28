@@ -135,6 +135,7 @@ public class PlayerChopper extends CollidingGameObject implements MainCharacter 
     @Override
     public void shoot() {
         if (shotDurationInMilliseconds + 300 <= gameView.gameTimeInMilliseconds()) {
+            gameView.playSound("playerchoppershot.wav", false);
             PlayerChopperShot playerChopperShot = new PlayerChopperShot(gameView, gamePlayManager, position,
                     currentState);
             gamePlayManager.spawnGameObject(playerChopperShot);

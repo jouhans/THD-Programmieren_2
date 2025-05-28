@@ -2,6 +2,7 @@ package thd.game.managers;
 
 import thd.game.level.Difficulty;
 import thd.game.level.Level;
+import thd.game.utilities.FileAccess;
 import thd.game.utilities.GameView;
 import thd.gameobjects.base.GameObject;
 import thd.gameobjects.movable.EnemyChopper;
@@ -23,23 +24,25 @@ class GameManager extends LevelManager {
     private void gameManagement() {
         if (endOfGame()) {
             if (!overlay.isMessageShown()) {
+                gameView.playSound("gamewin.wav", false);
                 overlay.showMessage("Game Over");
             }
-                if (gameView.timer(2000, 0, this)) {
+                if (gameView.timer(4000, 0, this)) {
+                    gameView.stopAllSounds();
                     overlay.stopShowing();
                     startNewGame();
-
             }
         } else if (endOfLevel()) {
             if (!overlay.isMessageShown()) {
+                gameView.playSound("levelpassed.wav", false);
                 overlay.showMessage("Great Job");
             }
-                if (gameView.timer(2000, 0, this)) {
+                if (gameView.timer(4000, 0, this)) {
+                    gameView.stopAllSounds();
                     overlay.stopShowing();
                     updatePointsAfterLevel();
                     switchToNextLevel();
                     initializeLevel();
-
             }
         }
     }
@@ -90,7 +93,10 @@ class GameManager extends LevelManager {
     }
 
     private void startNewGame() {
-        Level.difficulty = Difficulty.EASY;
+        Level.difficulty = FileAccess.readDifficultyFromDisc(); // Lesen der gespeicherten Auswahl.
+        Level.difficulty = Difficulty.EASY; // Dieser Befehl wird später durch eine Benutzerauswahl ersetzt.
+        FileAccess.writeDifficultyToDisc(Level.difficulty); // Abspeichern der neuen Auswahl.
+
         initializeGame();
     }
 

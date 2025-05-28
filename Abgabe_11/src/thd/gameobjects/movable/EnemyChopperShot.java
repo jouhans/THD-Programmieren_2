@@ -7,6 +7,7 @@ import thd.gameobjects.base.CollidingGameObject;
 import thd.gameobjects.base.Position;
 import thd.gameobjects.base.ShiftableGameObject;
 
+import java.awt.*;
 import java.util.Random;
 
 /**
@@ -49,6 +50,7 @@ class EnemyChopperShot extends CollidingGameObject implements ShiftableGameObjec
         timeAtStart = gameView.gameTimeInMilliseconds();
         random = new Random();
         timeTillExplode = (random.nextInt(1, 400)) * 10;
+        miniMapPosition = calculatePositionOnMinimap(position);
     }
     @Override
     public void updatePosition() {
@@ -57,11 +59,15 @@ class EnemyChopperShot extends CollidingGameObject implements ShiftableGameObjec
         } else {
             gamePlayManager.destroyGameObject(this);
         }
+        miniMapPosition = calculatePositionOnMinimap(position);
     }
 
     @Override
     public void addToCanvas() {
         gameView.addImageToCanvas("enemychoppershot.png", position.getX(), position.getY(), size, rotation);
+        if (isVisibleOnMinimap(position, width)) {
+            gameView.addRectangleToCanvas(miniMapPosition.getX(), miniMapPosition.getY(), 10, 5, 0, true, Color.blue);
+        }
     }
 
     @Override
@@ -73,6 +79,7 @@ class EnemyChopperShot extends CollidingGameObject implements ShiftableGameObjec
     public void reactToCollisionWith(CollidingGameObject other) {
         if (other instanceof PlayerChopper || other instanceof PlayerChopperShot || other instanceof EnemyJetBomb) {
             gamePlayManager.destroyGameObject(this);
+            gameView.playSound("small_explosion.wav", false);
         }
     }
 }
