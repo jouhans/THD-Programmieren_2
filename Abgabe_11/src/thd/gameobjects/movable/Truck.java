@@ -18,7 +18,7 @@ import java.awt.*;
  */
 public class Truck extends CollidingGameObject implements ShiftableGameObject {
     /**
-     * Initialize a new GameObject "Truck".
+     * Initializes a new GameObject "Truck".
      *
      * @param gameView link GameObject to the current GameView
      * @param gamePlayManager link GameObject to the GamePlayManager
