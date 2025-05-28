@@ -11,7 +11,7 @@ import java.awt.*;
 /**
  * Creates a new Truck Object using {@link Position} for the Position and using {@link GameView} to display it.
  * <p>
- * This class provides methodes to update the Position and to add the Object to the GameView.
+ * This class provides Methodes to update the Position and to add the Object to the GameView.
  *
  * @see Position
  * @see GameView
