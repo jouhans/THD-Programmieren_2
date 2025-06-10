@@ -1,0 +1,153 @@
+package thd.gameobjects.movable;
+
+import thd.game.managers.GamePlayManager;
+import thd.game.utilities.GameView;
+import thd.gameobjects.base.CollidingGameObject;
+import thd.gameobjects.base.MainCharacter;
+import thd.gameobjects.base.Position;
+import thd.gameobjects.unmovable.BackgroundGround;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Creates a new Player helicopter Object using {@link Position} for the
+ * Position and using {@link GameView} to display it.
+ * <p>
+ * This class provides methodes to update the Position and to add the Object to
+ * the GameView.
+ *
+ * @see Position
+ * @see GameView
+ */
+public class PlayerChopper extends CollidingGameObject implements MainCharacter {
+    private final List<CollidingGameObject> collidingGameObjectsForPathDecision;
+    private int shotDurationInMilliseconds;
+    private long lastCollisionTime;
+
+    enum State {
+        MOVING_LEFT, MOVING_RIGHT
+    }
+
+    private State currentState;
+
+    /**
+     * Initializes a new GameObject "Player Helicopter".
+     *
+     * @param gameView         link GameObject to the current GameView
+     * @param gamePlayManager  link GameObject to the GamePlayManager
+     * @param backgroundGround link ground to the PlayerChopper
+     */
+    public PlayerChopper(GameView gameView, GamePlayManager gamePlayManager, BackgroundGround backgroundGround) {
+        super(gameView, gamePlayManager);
+        speedInPixel = 8;
+        size = 2;
+        rotation = 0.0;
+        width = 122;
+        height = 60;
+        distanceToBackground = 4;
+        position.updateCoordinates(new Position(640, 360));
+        shotDurationInMilliseconds = gameView.gameTimeInMilliseconds();
+        lastCollisionTime = 0;
+        hitBoxOffsets(0, 0, 0, 0);
+        collidingGameObjectsForPathDecision = new ArrayList<>();
+        collidingGameObjectsForPathDecision.add(backgroundGround);
+        currentState = State.MOVING_RIGHT;
+        miniMapPosition = calculatePositionOnMinimap(position);
+    }
+
+    @Override
+    public void reactToCollisionWith(CollidingGameObject other) {
+        if (other instanceof EnemyChopperShot || other instanceof EnemyJetBomb || other instanceof EnemyChopper
+                || other instanceof EnemyJet || other instanceof GuidedMissile) {
+            // Verhindere mehrfache Lebensverluste im selben Frame (innerhalb von 100ms)
+            long currentTime = gameView.gameTimeInMilliseconds();
+            if (currentTime - lastCollisionTime > 100) {
+                gamePlayManager.lifeLost();
+                gamePlayManager.spawnGameObject(new Explosion(gameView, gamePlayManager, position));
+                lastCollisionTime = currentTime;
+            }
+        }
+    }
+
+    @Override
+    public void addToCanvas() {
+        switch (currentState) {
+            case MOVING_LEFT ->
+                gameView.addImageToCanvas("chopper.png", position.getX(), position.getY(), size, rotation);
+            case MOVING_RIGHT ->
+                gameView.addImageToCanvas("chopper_mirrored.png", position.getX(), position.getY(), size, rotation);
+        }
+        if (isVisibleOnMinimap(position, width)) {
+            gameView.addRectangleToCanvas(miniMapPosition.getX(), miniMapPosition.getY(), 10, 10, 0, true, Color.green);
+        }
+    }
+
+    @Override
+    public void updateStatus() {
+        miniMapPosition = calculatePositionOnMinimap(position);
+    }
+
+    /**
+     * Moves PlayerChopper to the left.
+     */
+    public void left() {
+        currentState = State.MOVING_LEFT;
+        if (position.getX() > (GameView.WIDTH / 2d) - 160) {
+            position.left(speedInPixel); // Helikopter bewegt sich nach links
+        } else {
+            gamePlayManager.moveWorldToRight(speedInPixel); // Welt bewegt sich nach rechts
+        }
+    }
+
+    /**
+     * Moves PlayerChopper to the right.
+     */
+    public void right() {
+        currentState = State.MOVING_RIGHT;
+        if (position.getX() < (GameView.WIDTH / 2d) + 160) {
+            position.right(speedInPixel); // Helikopter bewegt sich nach links
+        } else {
+            gamePlayManager.moveWorldToLeft(speedInPixel); // Welt bewegt sich nach rechts
+        }
+    }
+
+    /**
+     * Moves PlayerChopper up.
+     */
+    public void up() {
+        if (position.getY() > 0) {
+            position.moveToPosition(new Position(position.getX(), position.getY() - speedInPixel), speedInPixel);
+        }
+    }
+
+    /**
+     * Moves PlayerChopper down.
+     */
+    public void down() {
+        for (CollidingGameObject collidingGameObject : collidingGameObjectsForPathDecision) {
+            if (!collidesWith(collidingGameObject)) {
+                position.moveToPosition(new Position(position.getX(), position.getY() + speedInPixel), speedInPixel);
+                break;
+            }
+        }
+
+    }
+
+    @Override
+    public void shoot() {
+        if (shotDurationInMilliseconds + 300 <= gameView.gameTimeInMilliseconds()) {
+            gameView.playSound("playerchoppershot.wav", false);
+            PlayerChopperShot playerChopperShot = new PlayerChopperShot(gameView, gamePlayManager, position,
+                    currentState);
+            gamePlayManager.spawnGameObject(playerChopperShot);
+            shotDurationInMilliseconds = gameView.gameTimeInMilliseconds();
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Player Chopper: " + position;
+    }
+}
